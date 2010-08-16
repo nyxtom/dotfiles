@@ -33,7 +33,7 @@ set foldmethod=indent       " By default, use syntax to determine folds
 set foldlevelstart=99       " All folds open by default
 
 """" Display
-colors peaksea
+set t_Co=256
 set number                  " Display line numbers
 set numberwidth=1           " using only 1 column (and 1 space) while possible
 set background=dark 
@@ -41,8 +41,8 @@ if has("gui_running")
     set guioptions-=m           " remove menu bar
     set guioptions-=T           " remove toolbar
     set guioptions-=r           " remove right-hand scroll bar
-    set t_Co=256
 endif
+colors xoria256 
 " displays tabs with :set list & displays when a line runs off-screen
 set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
 
@@ -149,6 +149,7 @@ let g:skip_loading_mswin=1
 autocmd BufRead *.html set filetype=htmldjango
 
 autocmd FileType python set omnifunc=pythoncomplete#Complete
+"autocmd FileType python compiler pylint
 autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"      
 autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m       
 
