@@ -1,178 +1,314 @@
-" Author: John Anderson (sontek@gmail.com)
+set nocompatible
+set backspace=indent,eol,start
 
-" Stop behaving like vi; vim enhancements are better
-set nocompatible 
+" Menus
+" This must happen before the syntax system is enabled
+let no_buffers_menu=1
+set mousemodel=popup
 
-""" Moving Around/Editing
-set nostartofline           " Avoid moving cursor to BOL when jumping around
-set virtualedit=block       " Let cursor move past the last char in <C-v> mode
-set scrolloff=3             " Keep 3 context lines above and below the cursor
-set backspace=2             " Allow backspacing over autoindent, EOL, and BOL
-set showmatch               " Briefly jump to a paren once it's balanced
-set matchtime=2             " (for only .2 seconds).
-set nowrap                  " don't wrap text
-set linebreak               " don't wrap textin the middle of a word
+" Better modes.  Remeber where we are, support yankring
+set viminfo=!,'100,\"100,:20,<50,s10,h,n~/.viminfo
 
-""" Searching and Patterns
-set ignorecase              " Default to using case insensitive searches,
-set smartcase               " unless uppercase letters are used in the regex.
-set hlsearch                " Highlight searches by default.
-set incsearch               " Incrementally search while typing a /regex
+" The modelines bit prevents some security exploits having to do with
+" modelines in files.
+set modelines=0
 
-""" Insert completion
-" don't select first item, follow typing in autocomplete
-set completeopt=longest,menuone,preview
-set pumheight=6             " Keep a small completion window
-
-" close preview window automatically
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-
-"""" Folding
-set foldmethod=indent       " By default, use syntax to determine folds
-set foldlevelstart=99       " All folds open by default
-
-"""" Display
-set t_Co=256
-set number                  " Display line numbers
-set numberwidth=1           " using only 1 column (and 1 space) while possible
-set background=dark 
+" Enable Syntax Colors
+syntax on
 if has("gui_running")
-    set guioptions-=m           " remove menu bar
-    set guioptions-=T           " remove toolbar
-    set guioptions-=r           " remove right-hand scroll bar
+  colorscheme django2
+  set guifont=Menlo:h12
+  set fuoptions=maxvert,maxhorz
+  " does not work properly on os x
+  " au GUIEnter * set fullscreen
+  set list listchars=tab:›\ ,trail:·,eol:¬ " mark trailing white space
+  set colorcolumn=79 " My terminal doesn't support this
+else
+  colorscheme myterm
 endif
-colors xoria256 
-" displays tabs with :set list & displays when a line runs off-screen
-set listchars=tab:>-,eol:$,trail:-,precedes:<,extends:>
 
-"""" Messages, Info, Status
-set vb t_vb=                " Disable all bells.  I hate ringing/flashing.
-set confirm                 " Y-N-C prompt if closing with unsaved changes.
-set showcmd                 " Show incomplete normal mode commands as I type.
-set report=0                " : commands always print changed line count.
-set shortmess+=a            " Use [+]/[RO]/[w] for modified/readonly/written.
-set ruler                   " Show some info, even without statuslines.
-set laststatus=2            " Always show statusline, even if only 1 window.
+" The PC is fast enough, do syntax highlight syncing from start
+autocmd BufEnter * :syntax sync fromstart
 
-"""" Tabs/Indent Levels
-set tabstop=4               " <tab> inserts 4 spaces 
-set shiftwidth=4            " but an indent level is 2 spaces wide.
-set softtabstop=4           " <BS> over an autoindent deletes both spaces.
-set expandtab               " Use spaces, not tabs, for autoindent/tab key.
-set shiftround              " rounds indent to a multiple of shiftwidth
+" Don't write backup files or swap files
+set nobackup
+set noswapfile
 
-"""" Tags
-" Tags can be in ./tags, ../tags, ..., /home/tags.
-"set tags+=$HOME/.vim/tags/python.ctags
-"set tags+=$HOME/.vim/tags/django.ctags
+" Remember cursor position
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
-set showfulltag             " Show more information while completing tags.
-set cscopetag               " When using :tag, <C-]>, or "vim -t", try cscope:
-set cscopetagorder=0        " try ":cscope find g foo" and then ":tselect foo"
+" Enable hidden buffers
+set hidden
 
-"""" Reading/Writing
-set noautowrite             " Never write a file unless I request it.
-set noautowriteall          " NEVER.
-set noautoread              " Don't automatically re-read changed files.
-set modeline                " Allow vim options to be embedded in files;
-set modelines=5             " they must be within the first or last 5 lines.
-set ffs=unix,dos,mac        " Try recognizing dos, unix, and mac line endings.
+" enable automatic title setting for terminals
+set title
+set titleold="Terminal"
+set titlestring=%F\ -\ Vim
 
-"""" Backups/Swap Files
-" Make sure that the directory where we want to put swap/backup files exists.
-if has("win32") 
-    if ! len(glob("~/backup/"))
-        echomsg "Backup directory ~/backup doesn't exist!"
+" disable wrapping of long lines
+set nowrap
+
+" Enable filetype plugins and indention
+filetype plugin indent on
+
+" sets leader to ',' and localleader to "\"
+let mapleader=","
+let maplocalleader="\\"
+
+" activate a permanent ruler and disable Toolbar, and add line
+" highlightng as well as numbers.
+" And disable the sucking pydoc preview window for the omni completion
+" also highlight current line and disable the blinking cursor.
+set ruler
+set guioptions-=T " Don't show window toolbar
+set completeopt-=preview
+set gcr=a:blinkon0
+if has("gui_running")
+  set cursorline
+endif
+set ttyfast
+
+" customize the wildmenu
+set wildmenu
+set wildignore=*.dll,*.o,*.pyc,*.bak,*.exe,*.jpg,*.jpeg,*.png,*.gif,*$py.class,*.class
+set wildmode=list:full
+
+" change working directory automatically
+" disabled for mapleader that makes this explicit
+"" set autochdir
+
+" quicker window switching
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" arrow keys move visible lines
+inoremap <Down> <C-R>=pumvisible() ? "\<lt>Down>" : "\<lt>C-O>gj"<CR>
+inoremap <Up> <C-R>=pumvisible() ? "\<lt>Up>" : "\<lt>C-O>gk"<CR>
+nnoremap <Down> gj
+nnoremap <Up> gk
+vnoremap <Down> gj
+vnoremap <Up> gk
+
+" Search fixes
+" Lowercase is case insensitive, mixed case is case sensitive
+set ignorecase
+set smartcase
+" And be global by default
+set gdefault
+" Highlighting and incremental search
+set hlsearch
+set incsearch
+" hide matches on <leader>space
+nnoremap <leader><space> :nohlsearch<cr>
+
+" tab for brackets
+nnoremap <tab> %
+vnoremap <tab> %
+
+" split edit vimrc
+nnoremap <leader>ev <C-w><C-s><C-l>:e $MYVIMRC<CR>
+
+" Remove trailing whitespace on <leader>S
+nnoremap <leader>S :%s/\s\+$//<cr>:let @/=''<CR>
+
+" Ack on <leader>a
+nnoremap <leader>a :Ack
+
+" <leader>v selects the just pasted text
+nnoremap <leader>v V`]
+
+" NERDtree on <leader>t
+nnoremap <F3> :NERDTreeToggle<CR>
+let NERDTreeIgnore=['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$', '\.o$']
+let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\.bak$', '\~$']
+let NERDTreeChDirMode=2 " CWD is changed whenever the tree root is changed
+
+" Tab navigation
+nnoremap <C-]> :tabnext<CR>
+nnoremap <C-[> :tabprev<CR>
+
+" Scratch
+nmap <leader><tab> :Sscratch<CR><C-W>x<C-J>
+
+" Quit window on <leader>q
+nnoremap <leader>q :q<CR>
+
+" Copy to Lodgeit on ^d
+nnoremap <leader>p :Lodgeit<CR>
+
+" Set working directory
+nnoremap <leader>. :lcd %:p:h<CR>
+
+" Easy switching
+nnoremap <leader>th :set ft=htmldjango<CR>
+nnoremap <leader>tp :set ft=python<CR>
+nnoremap <leader>tj :set ft=javascript<CR>
+nnoremap <leader>tr :set ft=rst<CR>
+
+" Command-T support
+nnoremap <leader>o :CommandT<CR>
+
+" toggle between number and relative number on ,l
+nnoremap <leader>l :call ToggleRelativeAbsoluteNumber()<CR>
+function! ToggleRelativeAbsoluteNumber()
+  if &number
+    set relativenumber
+  else
+    set number
+  endif
+endfunction
+
+" Bubble single lines
+nmap <C-Up> [e
+nmap <C-Down> ]e
+" Bubble multiple lines
+vmap <C-Up> [egv
+vmap <C-Down> ]egv
+
+" Make the command line two lines high and change the statusline display to
+" something that looks useful.
+set cmdheight=2
+set laststatus=2
+set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
+set showcmd
+set number
+
+" Tab Settings
+set smarttab
+set tabstop=8
+
+" GUI Tab settings
+function! GuiTabLabel()
+  let label = ''
+  let buflist = tabpagebuflist(v:lnum)
+  if exists('t:title')
+    let label .= t:title . ' '
+  endif
+  let label .= '[' . bufname(buflist[tabpagewinnr(v:lnum) - 1]) . ']'
+  for bufnr in buflist
+    if getbufvar(bufnr, '&modified')
+      let label .= '+'
+      break
     endif
-    set backupdir^=~/backup    " Backups are written to ~/.backup/ if possible.
-    set directory^=~/backup//  " Swap files are also written to ~/.backup, too.
-endif
-if has("unix")
-    if ! len(glob("~/.backup/"))
-        echomsg "Backup directory ~/.backup doesn't exist!"
+  endfor
+  return label
+endfunction
+set guitablabel=%{GuiTabLabel()}
+
+" utf-8 default encoding
+set enc=utf-8
+
+" prefer unix over windows over os9 formats
+set fileformats=unix,dos,mac
+
+" don't bell or blink
+set noerrorbells
+set vb t_vb=
+
+" keep some more lines for scope
+set scrolloff=5
+
+" hide some files and remove stupid help
+let g:netrw_list_hide='^\.,.\(pyc\|pyo\|o\)$'
+map <leader>b :Explore!<CR>
+
+" Split management
+nnoremap <leader>w <C-w>v<C-w>l
+nnoremap <leader>W <C-w>s
+nnoremap <leader>s :new<CR>
+
+" ; is an alias for :
+nnoremap ; :
+
+" Get rid of help key mapping
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
+
+" map :BufClose to :bq and configure it to open a file browser on close
+let g:BufClose_AltBuffer = '.'
+cnoreabbr <expr> bq 'BufClose' 
+
+" python support
+" --------------
+"  don't highlight exceptions and builtins. I love to override them in local
+"  scopes and it sucks ass if it's highlighted then. And for exceptions I
+"  don't really want to have different colors for my own exceptions ;-)
+autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
+\ formatoptions+=croq softtabstop=4 ft=python.django
+\ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+let python_highlight_all=1
+let python_highlight_exceptions=0
+let python_highlight_builtins=0
+autocmd FileType pyrex setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4 cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+
+" ruby support
+" ------------
+autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+
+" php support
+" -----------
+autocmd FileType php setlocal shiftwidth=8 tabstop=8 softtabstop=8
+
+" template language support (SGML / XML too)
+" ------------------------------------------
+" and disable that stupid html rendering (like making stuff bold etc)
+
+fun! s:SelectHTML()
+  let n = 1
+  while n < 50 && n < line("$")
+    " check for django
+    if getline(n) =~ '{%\s*\(extends\|load\|block\|if\|for\|include\|trans\)\>'
+      set ft=htmldjango
+      return
     endif
-    set backupdir^=~/.backup    " Backups are written to ~/.backup/ if possible.
-    set directory^=~/.backup//  " Swap files are also written to ~/.backup, too.
-endif
+    let n = n + 1
+  endwhile
+  " go with html
+  set ft=html
+endfun
 
-"set writebackup             " Make a backup of the original file when writing
-"set backup                  " and don't delete it after a succesful write.
-set backupskip=             " There are no files that shouldn't be backed up.
-set updatetime=2000         " Write swap files after 2 seconds of inactivity.
-set backupext=~             " Backup for "file" is "file~"
-" ^ Here be magic! Quoth the help:
-" For Unix and Win32, if a directory ends in two path separators "//" or "\\",
-" the swap file name will be built from the complete path to the file with all
-" path separators substituted to percent '%' signs.  This will ensure file
-" name uniqueness in the preserve directory.
+autocmd FileType html,xhtml,xml,htmldjango,htmljinja,eruby,mako setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+autocmd BufNewFile,BufRead *.rhtml setlocal ft=eruby
+autocmd BufNewFile,BufRead *.mako setlocal ft=mako
+autocmd BufNewFile,BufRead *.tmpl setlocal ft=htmljinja
+autocmd BufNewFile,BufRead *.py_tmpl setlocal ft=python
+autocmd BufNewFile,BufRead *.html,*.htm  call s:SelectHTML()
+let html_no_rendering=1
 
-"""" Command Line
-set history=1000            " Keep a very long command-line history.
-set wildmenu                " Menu completion in command mode on <Tab>
-set wildmode=full           " <Tab> cycles between all matching choices.
-set wcm=<C-Z>               " Ctrl-Z in a mapping acts like <Tab> on cmdline
-source $VIMRUNTIME/menu.vim " Load menus (this would be done anyway in gvim)
-" <F4> triggers the menus, even in terminal vim.
-map <F4> :emenu <C-Z>
+let g:closetag_default_xml=1
+autocmd FileType html,htmldjango,htmljinja,eruby,mako let b:closetag_html_style=1
+autocmd FileType html,xhtml,xml,htmldjango,htmljinja,eruby,mako source ~/.vim/scripts/closetag.vim
 
-"""" Per-Filetype Scripts
-" NOTE: These define autocmds, so they should come before any other autocmds.
-"       That way, a later autocmd can override the result of one defined here.
-filetype on                 " Enable filetype detection,
-filetype indent on          " use filetype-specific indenting where available,
-filetype plugin on          " also allow for filetype-specific plugins,
-syntax on                   " and turn on per-filetype syntax highlighting.
+" CSS
+" ---
+autocmd FileType css setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 
-""" Key Mappings
-map <silent><C-Left> <C-T>
-map <silent><C-Right> <C-]>
+" Java
+" ----
+autocmd FileType java setlocal shiftwidth=2 tabstop=8 softtabstop=2 expandtab
 
-" easily move around tabs
-map <silent><A-Right> :tabnext<CR>
-map <silent><A-Left> :tabprevious<CR>
+" rst
+" ---
+autocmd BufNewFile,BufRead *.txt setlocal ft=rst
+autocmd FileType rst setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
+\ formatoptions+=nqt textwidth=74
 
-" execute selected script
-map <C-h> :py EvaluateCurrentRange()<CR>
+" C#
+autocmd FileType cs setlocal tabstop=4 softtabstop=4 shiftwidth=4
 
-" Show tasks in current buffer
-map T :TaskList<CR><C-w><Left>
+" C/C++
+autocmd FileType c setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+autocmd FileType cpp setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 
-" Show Project Menu
-map <F3> :NERDTreeToggle<CR>
+" vim
+" ---
+autocmd FileType vim setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
 
+" Javascript
+" ----------
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
+let javascript_enable_domhtmlcss=1
 
-let Tlist_GainFocus_On_ToggleOpen=1
-let g:skip_loading_mswin=1
-
-" treat html files as django templates
-autocmd BufRead *.html set filetype=htmldjango
-
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-"autocmd FileType python compiler pylint
-autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"      
-autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m       
-
-inoremap <Nul> <C-x><C-o>
-inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ?
-        \ "\<lt>C-n>" :
-        \ "\<lt>C-x>\<lt>C-o><c-r>=pumvisible() ?" .
-        \ "\"\\<lt>c-n>\\<lt>c-p>\\<lt>c-n>\" :" .
-        \ "\" \\<lt>bs>\\<lt>C-n>\"\<CR>"
-imap <C-@> <C-Space>
-
-if has("python")
-python << EOF
-import os
-import sys
-import vim
-# lets us use 'gf' to go to files imported
-for p in sys.path:
-    if os.path.isdir(p):
-        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
-
-# lets us execute the highlighted portion of the script
-def EvaluateCurrentRange():
-    eval(compile('\n'.join(vim.current.range),'','exec'),globals())
-EOF
-endif
