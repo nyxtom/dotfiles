@@ -7,7 +7,7 @@ let no_buffers_menu=1
 set mousemodel=popup
 
 " Better modes.  Remeber where we are, support yankring
-set viminfo=!,'100,\"100,:20,<50,s10,h,n~/.viminfo
+" set viminfo=!,'100,\"100,:20,<50,s10,h,n~/.viminfo
 
 " The modelines bit prevents some security exploits having to do with
 " modelines in files.
@@ -23,8 +23,6 @@ if has("gui_running")
   " au GUIEnter * set fullscreen
   set list listchars=tab:›\ ,trail:·,eol:¬ " mark trailing white space
   set colorcolumn=79 " My terminal doesn't support this
-else
-  colorscheme myterm
 endif
 
 " The PC is fast enough, do syntax highlight syncing from start
@@ -120,17 +118,17 @@ nnoremap <leader>a :Ack
 nnoremap <leader>v V`]
 
 " NERDtree on <leader>t
-nnoremap <F3> :NERDTreeToggle<CR>
+nnoremap N :NERDTreeToggle<CR>
 let NERDTreeIgnore=['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$', '\.o$']
 let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\.bak$', '\~$']
 let NERDTreeChDirMode=2 " CWD is changed whenever the tree root is changed
 
 " Tab navigation
-nnoremap <C-]> :tabnext<CR>
-nnoremap <C-[> :tabprev<CR>
+nnoremap <C-n> :tabnext<CR>
+nnoremap <C-p> :tabprev<CR>
 
 " Scratch
-nmap <leader><tab> :Sscratch<CR><C-W>x<C-J>
+"nmap <leader><tab> :Sscratch<CR><C-W>x<C-J>
 
 " Quit window on <leader>q
 nnoremap <leader>q :q<CR>
@@ -220,7 +218,7 @@ nnoremap <leader>W <C-w>s
 nnoremap <leader>s :new<CR>
 
 " ; is an alias for :
-nnoremap ; :
+"nnoremap ; :
 
 " Get rid of help key mapping
 inoremap <F1> <ESC>

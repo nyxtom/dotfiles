@@ -62,5 +62,5 @@ if [ "$venwrap" != "" ]; then
     source $venwrap
 fi
 PATH=$PATH:/var/lib/gems/1.9.1/gems/haml-3.0.4/bin
-PATH=$PATH:/usr/local/sbin
+PATH=$PATH:/usr/local/sbin/
 export PATH
