@@ -180,9 +180,6 @@ function! s:SnipMapKeys()
     endif
   endif
 
-  if (!hasmapto( 'i<BS>'.g:snippetsEmu_key, 's'))
-    exec 'smap <unique> '.g:snippetsEmu_key.' i<BS>'.g:snippetsEmu_key
-  endif
   imap <silent> <script> <Plug>Jumper <C-R>=<SID>Jumper()<CR>
 endfunction
 

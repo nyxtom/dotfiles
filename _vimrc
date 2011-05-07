@@ -3,7 +3,6 @@ set backspace=indent,eol,start
 
 " Menus
 " This must happen before the syntax system is enabled
-let no_buffers_menu=1
 set mousemodel=popup
 
 " Better modes.  Remeber where we are, support yankring
@@ -16,7 +15,7 @@ set modelines=0
 " Enable Syntax Colors
 syntax on
 if has("gui_running")
-  colorscheme django2
+  colors xoria256
   set guifont=Menlo:h12
   set fuoptions=maxvert,maxhorz
   " does not work properly on os x
@@ -34,9 +33,6 @@ set noswapfile
 
 " Remember cursor position
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-
-" Enable hidden buffers
-set hidden
 
 " enable automatic title setting for terminals
 set title
@@ -268,7 +264,7 @@ fun! s:SelectHTML()
   set ft=html
 endfun
 
-autocmd FileType html,xhtml,xml,htmldjango,htmljinja,eruby,mako setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType html,xhtml,xml,htmldjango,htmljinja,eruby,mako setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 autocmd BufNewFile,BufRead *.rhtml setlocal ft=eruby
 autocmd BufNewFile,BufRead *.mako setlocal ft=mako
 autocmd BufNewFile,BufRead *.tmpl setlocal ft=htmljinja
@@ -282,7 +278,7 @@ autocmd FileType html,xhtml,xml,htmldjango,htmljinja,eruby,mako source ~/.vim/sc
 
 " CSS
 " ---
-autocmd FileType css setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType css setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " Java
 " ----
@@ -290,7 +286,7 @@ autocmd FileType java setlocal shiftwidth=2 tabstop=8 softtabstop=2 expandtab
 
 " rst
 " ---
-autocmd BufNewFile,BufRead *.txt setlocal ft=rst
+autocmd BufNewFile,BufRead *.txt,*.md,*.rst setlocal ft=rst
 autocmd FileType rst setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 \ formatoptions+=nqt textwidth=74
 
@@ -307,6 +303,26 @@ autocmd FileType vim setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
 
 " Javascript
 " ----------
-autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
-let javascript_enable_domhtmlcss=1
+autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
 
+
+" Less CSS
+" ----------
+syntax on
+au BufNewFile,BufRead *.less set filetype=less expandtab shiftwidth=4 tabstop=4 softtabstop=4
+
+python << EOF
+import os
+import sys
+import vim
+for p in sys.path:
+  if os.path.isdir(p):
+    vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+EOF
+
+set tags+=$HOME/.vim/tags/python.ctags
+set tags+=$HOME/.vim/tags/django.ctags
+
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+inoremap <Nul> <C-x><C-o>
+set colorcolumn=90

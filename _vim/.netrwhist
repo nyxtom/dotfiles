@@ -1,4 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =7
 let g:netrw_dirhist_1='/home/nyxtom/.weechat'
 let g:netrw_dirhist_2='/home/nyxtom/software/django-pagelinks'
+let g:netrw_dirhist_3='/usr/local/Cellar/python2.6/2.6.6/lib/python2.6/site-packages/ropevim-0.3_rc-py2.6.egg-info'
+let g:netrw_dirhist_4='/Users/majortom/grabswag/scripts/local/logs'
+let g:netrw_dirhist_5='/Users/majortom/grabswag/apps/advantage/views'
+let g:netrw_dirhist_6='/Users/majortom/grabswag/apps/mainsite/templates/account/support'
+let g:netrw_dirhist_7='/Users/majortom/bidsite/apps/landingpages2/fixtures'
