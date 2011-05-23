@@ -1,13 +1,16 @@
 [user]
-	name = nyxtom@gmail.com
+	name = Thomas Holloway
 	email = nyxtom@gmail.com
-
 [color]
-    diff = auto
-    status = auto
-    branch = auto
-
+	ndiff = auto
+	status = auto
+	branch = auto
+	diff = auto
 [push]
 	default = matching
 [core]
 	editor = vim
+[merge]
+	tool = kdiff3
+[reviewboard]
+	url = http://reviews.mydomedia.com
