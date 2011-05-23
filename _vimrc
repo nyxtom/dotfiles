@@ -245,6 +245,10 @@ autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 " php support
 " -----------
 autocmd FileType php setlocal shiftwidth=8 tabstop=8 softtabstop=8
+" cucumber support
+" -----------
+syntax on
+au BufNewFile,BufRead *.feature set filetype=cucumber expandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " template language support (SGML / XML too)
 " ------------------------------------------
