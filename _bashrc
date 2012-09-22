@@ -24,7 +24,10 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-PS1='\[\033[01;34m\]\w\[\033[00m\]`__git_ps1`\n${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]\$ '
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+PS1="\[\033[01;34m\]\w\[\033[00m\] \$(parse_git_branch)\n${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]\$ "
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -150,10 +153,6 @@ export PATH
 PYTHONSTARTUP=~/.pythonrc.py
 export PYTHONSTARTUP
 
-parse_git_branch ()
-{
-  git name-rev HEAD 2> /dev/null | sed 's#HEAD\ \(.*\)#(git::\1)#'
-}
 parse_svn_branch() {
   parse_svn_url | sed -e 's#^'"$(parse_svn_repository_root)"'##g' | awk -F / '{print "(svn::"$1 "/" $2 ")"}'
 }
@@ -173,7 +172,6 @@ parse_svn_repository_root() {
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
-source ~/.hg_bash_completion
 
 venwrap=`type -P virtualenvwrapper_bashrc`
 if [ "$venwrap" != "" ]; then
@@ -185,13 +183,11 @@ PATH=$PATH:/usr/local/bin
 PATH=$PATH:/usr/local/Cellar/python2.6/2.6.6/bin
 PATH=$PATH:~/.virtualenvs/prw
 PATH=$PATH:~/.gem/ruby/1.8/bin
+PATH=$PATH:$HOME/local/node/bin
 export PATH
 export MAXOSX_DEPLOYMENT_TARGET=10.6
 export WORKON_HOME=$HOME/.virtualenvs
-source /usr/local/Cellar/python2.6/2.6.6/bin/virtualenvwrapper.sh
-source ~/bidsite/scripts/git-helpers
-source ~/bidsite/scripts/qa-helpers
-source ~/z/z.sh
+#source /usr/local/Cellar/python2.6/2.6.6/bin/virtualenvwrapper.sh
 alias vi="bash -lc mvim"
 alias test="nosetests"
 
@@ -253,3 +249,18 @@ alias gdiff='git diff'
 alias clearpyc='find . -name "*.pyc" -exec rm "{}" ";"'
 alias rmo="find . -name *.orig -exec rm '{}' ';'"
 alias commit='git commit -m'
+alias mongo-system-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-system-live.nuviapp.com'
+alias mongo-stats-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-stats-live.nuviapp.com'
+alias mongo-profile-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-profile-live.nuviapp.com'
+alias mongo-social-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-social-live.nuviapp.com'
+alias redis-live='ssh -i ~/.ec2/nuvi.pem root@redis-live.nuviapp.com'
+alias redis-dev='ssh -i ~/.ec2/nuvi.pem root@redis-dev.nuviapp.com'
+alias mongo-dev='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-dev.nuviapp.com'
+alias hadoop-dev='ssh -i ~/.ec2/hadoop.pem ubuntu@hadoop1-dev.nuviapp.com'
+
+source ~/.git-helpers
+alias vim="/usr/local/Cellar/macvim/7.3-57/MacVim.app/Contents/MacOS/Vim"
+
+if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
+. /usr/local/etc/bash_completion.d/git-completion.bash
+fi

@@ -48,3 +48,5 @@ export PATH
 # The orginal version is saved in .profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/2.6/bin:${PATH}"
 export PATH
+
+source ~/.bashrc

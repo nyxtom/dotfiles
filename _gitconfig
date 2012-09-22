@@ -12,5 +12,3 @@
 	editor = vim
 [merge]
 	tool = kdiff3
-[reviewboard]
-	url = http://reviews.mydomedia.com

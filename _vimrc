@@ -14,16 +14,7 @@ set modelines=0
 
 " Enable Syntax Colors
 syntax on
-if has("gui_running")
-  colors xoria256
-  set guifont=Menlo:h12
-  set fuoptions=maxvert,maxhorz
-  " does not work properly on os x
-  " au GUIEnter * set fullscreen
-  set list listchars=tab:›\ ,trail:·,eol:¬ " mark trailing white space
-  set colorcolumn=79 " My terminal doesn't support this
-endif
-
+colors ir_black
 " The PC is fast enough, do syntax highlight syncing from start
 autocmd BufEnter * :syntax sync fromstart
 
@@ -315,18 +306,8 @@ autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=8 softtabsto
 syntax on
 au BufNewFile,BufRead *.less set filetype=less expandtab shiftwidth=4 tabstop=4 softtabstop=4
 
-python << EOF
-import os
-import sys
-import vim
-for p in sys.path:
-  if os.path.isdir(p):
-    vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
-EOF
-
 set tags+=$HOME/.vim/tags/python.ctags
 set tags+=$HOME/.vim/tags/django.ctags
 
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 inoremap <Nul> <C-x><C-o>
-set colorcolumn=90
