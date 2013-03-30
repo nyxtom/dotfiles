@@ -7,8 +7,9 @@
 	branch = auto
 	diff = auto
 [push]
-	default = matching
+	default = simple
 [core]
 	editor = vim
+	autocrlf = false
 [merge]
 	tool = kdiff3
