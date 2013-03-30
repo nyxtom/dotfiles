@@ -191,7 +191,6 @@ export PATH
 export MAXOSX_DEPLOYMENT_TARGET=10.6
 export WORKON_HOME=$HOME/.virtualenvs
 #source /usr/local/Cellar/python2.6/2.6.6/bin/virtualenvwrapper.sh
-alias vi="bash -lc mvim"
 
 
 function qt() {
@@ -298,9 +297,6 @@ function sedeasy {
     sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
 }
 
-source ~/.git-helpers
-alias vim="/usr/local/Cellar/macvim/7.3-57/MacVim.app/Contents/MacOS/Vim"
-
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 . /usr/local/etc/bash_completion.d/git-completion.bash
 fi
@@ -309,5 +305,5 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/Current/share/aclocal"
 export PATH="/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH"
-export DYLD_FALLBACK_LIBRARY_PATH=/Library/Frameworks/Mono.framework/Versions/Current/lib:/lib:/usr/lib
+#export DYLD_FALLBACK_LIBRARY_PATH=/Library/Frameworks/Mono.framework/Versions/Current/lib:/lib:/usr/lib
 
