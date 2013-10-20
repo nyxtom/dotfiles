@@ -288,6 +288,9 @@ autocmd FileType rst setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 " C#
 autocmd FileType cs setlocal tabstop=4 softtabstop=4 shiftwidth=4
 
+" .sh
+autocmd FileType sh setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
+
 " C/C++
 autocmd FileType c setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 autocmd FileType cpp setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab

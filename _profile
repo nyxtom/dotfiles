@@ -3,6 +3,7 @@ export CLICOLOR='Yes'
 export LSCOLORS=''
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/Cellar/python/2.7/bin/:$PATH"
+export TREETAGGER="~/Public/tree-tagger/cmd/"
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return

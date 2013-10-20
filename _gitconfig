@@ -6,8 +6,9 @@
 	status = auto
 	branch = auto
 	diff = auto
+	ui = true
 [push]
-	default = simple
+	default = current
 [core]
 	editor = vim
 	autocrlf = false

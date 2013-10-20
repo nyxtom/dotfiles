@@ -183,14 +183,14 @@ fi
 PATH=$PATH:/var/lib/gems/1.9.1/gems/haml-3.0.4/bin
 PATH=$PATH:/usr/local/sbin/
 PATH=$PATH:/usr/local/bin
-PATH=$PATH:/usr/local/Cellar/python2.6/2.6.6/bin
 PATH=$PATH:~/.virtualenvs/prw
 PATH=$PATH:~/.gem/ruby/1.8/bin
 PATH=$PATH:$HOME/local/node/bin
+PATH=$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin
+PATH=$PATH:/usr/local/share/python
 export PATH
 export MAXOSX_DEPLOYMENT_TARGET=10.6
 export WORKON_HOME=$HOME/.virtualenvs
-#source /usr/local/Cellar/python2.6/2.6.6/bin/virtualenvwrapper.sh
 
 
 function qt() {
@@ -242,6 +242,8 @@ unalias st 2> /dev/null
 unalias clearpyc 2> /dev/null
 unalias rmo 2> /dev/null
 unalias runtests 2> /dev/null
+alias runtestsm3='/Library/FRameworks/Mono.framework/Versions/3.0.10/bin/mono --runtime=v4.0 $UNIXNUVIS/src/packages/NUnit.Runners.2.6.1/tools/nunit-console.exe $UNIXNUVIS/src/Nuvis.Tests/bin/Debug/Nuvis.Tests.dll'
+alias runtests='/Library/FRameworks/Mono.framework/Versions/Current/bin/mono --runtime=v4.0 $UNIXNUVIS/src/packages/NUnit.Runners.2.6.1/tools/nunit-console.exe $UNIXNUVIS/src/Nuvis.Tests/bin/Debug/Nuvis.Tests.dll'
 alias st='git status'
 alias branches='git branch -a | sed -Ee "s:^\*? *::" | sed -Ee "s:^(remotes/)?origin/::g" | grep -v "HEAD -> origin/master" | sort | uniq'
 alias pull='git pull'
@@ -263,15 +265,10 @@ alias mongo-social-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-social-live.nuvia
 alias mongo-social2-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-social2-live.nuviapp.com'
 alias mongo-fractal-test='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-fractal-test.nuviapp.com'
 
-alias livecli-nuvi-system='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-system-live.nuviapp.com -t "mongo localhost/nuvis_system -unuvicorp -pnuvitweets1337"'
-alias livecli-nuvi-log='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-system-live.nuviapp.com -t "mongo localhost/nuvis_log -unuvicorp -pnuvitweets1337"'
-alias livecli-nuvi-stats='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-stats-live.nuviapp.com -t "mongo localhost/nuvis_stats -unuvicorp -pnuvitweets1337"'
-alias livecli-nuvi-profiles='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-profile-live.nuviapp.com -t "mongo localhost/nuvis_stats -unuvicorp -pnuvitweets1337"'
-alias livecli-nuvi-social='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-social2-live.nuviapp.com -t "mongo localhost/nuvis_social -unuvicorp -pnuvitweets1337"'
-alias livecli-nuvi-insights='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-stats-live.nuviapp.com -t "mongo localhost/nuvis_insights -unuvicorp -pnuvitweets1337"'
-alias livecli-nuvi-geonames='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-system-live.nuviapp.com -t "mongo localhost/nuvis_geonames -unuvicorp -pnuvitweets1337"'
-alias livecli-nuvi-trends='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-stats-live.nuviapp.com -t "mongo localhost/nuvis_trends -unuvicorp -pnuvitweets1337"'
-alias livecli-nuvi-categories='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-stats-live.nuviapp.com -t "mongo localhost/nuvis_categories -unuvicorp -pnuvitweets1337"'
+alias livecli-nuvi-system='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-system-live.nuviapp.com -t "mongo localhost/admin -unuvicorp -pnuvitweets1337"'
+alias livecli-nuvi-stats='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-stats-live.nuviapp.com -t "mongo localhost/admin -unuvicorp -pnuvitweets1337"'
+alias livecli-nuvi-profiles='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-profile-live.nuviapp.com -t "mongo localhost/admin -unuvicorp -pnuvitweets1337"'
+alias livecli-nuvi-social='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-social2-live.nuviapp.com -t "mongo localhost/admin -unuvicorp -pnuvitweets1337"'
 
 alias workers01-live='ssh -i ~/.ec2/nuvi.pem ec2-user@workers01-live.nuviapp.com'
 alias workers02-live='ssh -i ~/.ec2/nuvi.pem ec2-user@workers02-live.nuviapp.com'
@@ -280,6 +277,7 @@ alias workers04-live='ssh -i ~/.ec2/nuvi.pem ec2-user@workers04-live.nuviapp.com
 alias redis-live='ssh -i ~/.ec2/nuvi.pem ec2-user@redis-live.nuviapp.com -t "redis-cli"'
 alias redis-stats-live='ssh -i ~/.ec2/nuvi.pem ec2-user@redis-stats-live.nuviapp.com -t "redis-cli"'
 alias redis-stats-live-db1='ssh -i ~/.ec2/nuvi.pem ec2-user@redis-stats-live.nuviapp.com -t "redis-cli -n 1"'
+alias redis-supercache-live='ssh -i ~/.ec2/nuvi.pem ec2-user@redis-supercache-live.nuviapp.com -t "redis-cli"'
 alias redis-dev='ssh -i ~/.ec2/nuvi.pem ec2-user@redis-dev.nuviapp.com -t "redis-cli"'
 
 alias mongo-dev='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-dev.nuviapp.com'
@@ -289,9 +287,12 @@ alias workers-dev='ssh -i ~/.ec2/nuvi.pem ec2-user@workers-dev.nuviapp.com'
 alias util='ssh -i ~/.ec2/nuvi.pem ec2-user@util.nuviapp.com'
 
 export UNIXNUVIS='/users/nyxtom/nuvi/nuvis'
+export PHANTOMJS='/usr/local/Cellar/phantomjs/1.9.0/'
 source $UNIXNUVIS/scripts/bash/buildx
 export NUVIPEM='~/.ec2/nuvi.pem'
 alias neo4j='~/db/bin/neo4j'
+export IKNOW=~/nuvi/iknow
+export IKNOWLOG=~/nuvi/iknowlog
 
 function sedeasy {
     sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
@@ -305,5 +306,6 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/Current/share/aclocal"
 export PATH="/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH"
+export TREETAGGER="/Users/nyxtom/Public/tree-tagger/cmd/"
 #export DYLD_FALLBACK_LIBRARY_PATH=/Library/Frameworks/Mono.framework/Versions/Current/lib:/lib:/usr/lib
 
