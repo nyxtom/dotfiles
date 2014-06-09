@@ -309,3 +309,6 @@ export PATH="/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH"
 export TREETAGGER="/Users/nyxtom/Public/tree-tagger/cmd/"
 #export DYLD_FALLBACK_LIBRARY_PATH=/Library/Frameworks/Mono.framework/Versions/Current/lib:/lib:/usr/lib
 
+
+PERL_MB_OPT="--install_base \"/Users/nyxtom/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/nyxtom/perl5"; export PERL_MM_OPT;
