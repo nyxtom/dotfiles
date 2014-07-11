@@ -303,6 +303,21 @@ autocmd FileType vim setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
 " ----------
 autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
 
+" JSON
+" ---------
+au BufNewFile,BufRead *.json set filetype=json expandtab shiftwidth=2 softtabstop=2 tabstop=8 autoindent formatoptions=tcq2l textwidth=78
+
+" Scala
+" ----------
+fun! s:DetectScala()
+    if getline(1) == '#!/usr/bin/env scala'
+        set filetype=scala
+    endif
+endfun
+
+au BufRead,BufNewFile *.scala,*.sbt set filetype=scala
+au BufRead,BufNewFile * call s:DetectScala()
+
 
 " Less CSS
 " ----------
