@@ -1,6 +1,11 @@
 set nocompatible
 set backspace=indent,eol,start
 
+" Add xptemplate global personal directory value
+if has("unix")
+  set runtimepath+=~/.vim/personal
+endif
+
 " Menus
 " This must happen before the syntax system is enabled
 set mousemodel=popup
@@ -14,7 +19,10 @@ set modelines=0
 
 " Enable Syntax Colors
 syntax on
-colors ir_black
+colors xoria256
+set nocursorline
+set nocursorcolumn
+set ttyfast
 " The PC is fast enough, do syntax highlight syncing from start
 autocmd BufEnter * :syntax sync fromstart
 
@@ -48,10 +56,6 @@ set ruler
 set guioptions-=T " Don't show window toolbar
 set completeopt-=preview
 set gcr=a:blinkon0
-if has("gui_running")
-  set cursorline
-endif
-set ttyfast
 
 " customize the wildmenu
 set wildmenu
@@ -214,7 +218,7 @@ vnoremap <F1> <ESC>
 
 " map :BufClose to :bq and configure it to open a file browser on close
 let g:BufClose_AltBuffer = '.'
-cnoreabbr <expr> bq 'BufClose' 
+cnoreabbr <expr> bq 'BufClose'
 
 " python support
 " --------------
@@ -329,3 +333,10 @@ set tags+=$HOME/.vim/tags/django.ctags
 
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 inoremap <Nul> <C-x><C-o>
+
+" XPTemplate
+" ----------
+let g:xptemplate_brace_complete = ''
+
+let g:scala_use_default_keymappings = 0
+set hlsearch
