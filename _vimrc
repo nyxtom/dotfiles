@@ -105,6 +105,7 @@ nnoremap <leader>S :%s/\s\+$//<cr>:let @/=''<CR>
 " Ack on <leader>a
 nnoremap <leader>a :Ack
 
+
 " <leader>v selects the just pasted text
 nnoremap <leader>v V`]
 
@@ -117,6 +118,9 @@ let NERDTreeChDirMode=2 " CWD is changed whenever the tree root is changed
 " Tab navigation
 nnoremap <C-n> :tabnext<CR>
 nnoremap <C-p> :tabprev<CR>
+
+" QuickRun
+nnoremap <C-r> :QuickRun<CR>
 
 " Scratch
 "nmap <leader><tab> :Sscratch<CR><C-W>x<C-J>
@@ -310,6 +314,10 @@ autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=8 softtabsto
 " JSON
 " ---------
 au BufNewFile,BufRead *.json set filetype=json expandtab shiftwidth=2 softtabstop=2 tabstop=8 autoindent formatoptions=tcq2l textwidth=78
+
+" Markdown
+" --------
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " Scala
 " ----------
