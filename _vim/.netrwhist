@@ -1,7 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/Users/nyxtom/nyxtom/dataminer/lib/http'
 let g:netrw_dirhist_2='/Users/nyxtom/nuvi/health/web'
 let g:netrw_dirhist_3='/Users/nyxtom/nuvi/scripts/redis'
 let g:netrw_dirhist_4='/Users/nyxtom/nyxtom/dataminer/lib'
 let g:netrw_dirhist_5='/Users/nyxtom/salient/salientio/web/api/models'
+let g:netrw_dirhist_6='/Users/nyxtom/nyxtom/networkwordcount'

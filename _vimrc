@@ -344,7 +344,5 @@ inoremap <Nul> <C-x><C-o>
 
 " XPTemplate
 " ----------
-let g:xptemplate_brace_complete = ''
-
 let g:scala_use_default_keymappings = 0
 set hlsearch
