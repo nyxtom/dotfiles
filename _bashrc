@@ -180,9 +180,11 @@ venwrap=`type -P virtualenvwrapper_bashrc`
 if [ "$venwrap" != "" ]; then
     source $venwrap
 fi
+export GOPATH=~/go
 PATH=$PATH:/var/lib/gems/1.9.1/gems/haml-3.0.4/bin
 PATH=$PATH:/usr/local/sbin/
 PATH=$PATH:/usr/local/bin
+PATH=$PATH:/usr/local/cuda/bin
 PATH=$PATH:~/.virtualenvs/prw
 PATH=$PATH:~/.gem/ruby/1.8/bin
 PATH=$PATH:$HOME/local/node/bin
@@ -190,6 +192,7 @@ PATH=$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin
 PATH=$PATH:/usr/local/share/python
 PATH=$PATH:~/Public/titan/bin
 PATH=$PATH:~/spark-1.0.0/bin
+PATH=$PATH:$GOPATH/bin
 export PATH
 export MAXOSX_DEPLOYMENT_TARGET=10.6
 export WORKON_HOME=$HOME/.virtualenvs
@@ -293,7 +296,6 @@ alias commit='git commit -m'
 export PHANTOMJS='/usr/local/Cellar/phantomjs/1.9.0/'
 #source $UNIXNUVIS/scripts/bash/buildx
 #export NUVIPEM='~/.ec2/nuvi.pem'
-alias neo4j='~/db/bin/neo4j'
 #export IKNOW=~/nuvi/iknow
 #export IKNOWLOG=~/nuvi/iknowlog
 
@@ -308,10 +310,20 @@ fi
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/Current/share/aclocal"
-export PATH="/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH"
+#export PATH="/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH"
 export TREETAGGER="/Users/nyxtom/Public/tree-tagger/cmd/"
 #export DYLD_FALLBACK_LIBRARY_PATH=/Library/Frameworks/Mono.framework/Versions/Current/lib:/lib:/usr/lib
 
 
 PERL_MB_OPT="--install_base \"/Users/nyxtom/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/nyxtom/perl5"; export PERL_MM_OPT;
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+eval "$($HOME/.rbl/bin/rbl init -)"
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/nyxtom/google-cloud-sdk/path.bash.inc'
+
+# The next line enables bash completion for gcloud.
+source '/Users/nyxtom/google-cloud-sdk/completion.bash.inc'
