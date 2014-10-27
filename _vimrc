@@ -19,7 +19,7 @@ set modelines=0
 
 " Enable Syntax Colors
 syntax on
-colors xoria256
+colors delek
 set nocursorline
 set nocursorcolumn
 set ttyfast
