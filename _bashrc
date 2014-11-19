@@ -320,7 +320,8 @@ PERL_MM_OPT="INSTALL_BASE=/Users/nyxtom/perl5"; export PERL_MM_OPT;
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
-eval "$($HOME/.rbl/bin/rbl init -)"
+#eval "$($HOME/.rbl/bin/rbl init -)"
+source kvm.sh
 
 # The next line updates PATH for the Google Cloud SDK.
 source '/Users/nyxtom/google-cloud-sdk/path.bash.inc'

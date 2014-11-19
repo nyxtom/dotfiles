@@ -26,6 +26,10 @@ set ttyfast
 " The PC is fast enough, do syntax highlight syncing from start
 autocmd BufEnter * :syntax sync fromstart
 
+source ~/.vim/autoload/pathogen.vim
+execute pathogen#infect()
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+
 " Don't write backup files or swap files
 set nobackup
 set noswapfile
@@ -41,7 +45,10 @@ set titlestring=%F\ -\ Vim
 " disable wrapping of long lines
 set nowrap
 
-" Enable filetype plugins and indention
+" Pathogen
+filetype off
+call pathogen#infect()
+call pathogen#helptags() " generate helptags for everything in 'runtimepath'
 filetype plugin indent on
 
 " sets leader to ',' and localleader to "\"
@@ -349,27 +356,6 @@ let g:scala_use_default_keymappings = 0
 set hlsearch
 
 " GOLANG
-" -----------
-" We take care to preserve the user's fileencodings and fileformats,
-" because those settings are global (not buffer local), yet we want
-" to override them for loading Go files, which are defined to be UTF-8.
-let s:current_fileformats = ''
-let s:current_fileencodings = ''
-
-" define fileencodings to open as utf-8 encoding even if it's ascii.
-function! s:gofiletype_pre()
-  let s:current_fileformats = &g:fileformats
-  let s:current_fileencodings = &g:fileencodings
-  set fileencodings=utf-8 fileformats=unix
-  setlocal filetype=go
-endfunction
-
-" restore fileencodings as others
-function! s:gofiletype_post()
-  let &g:fileformats = s:current_fileformats
-  let &g:fileencodings = s:current_fileencodings
-endfunction
-
-au BufNewFile *.go setlocal filetype=go fileencoding=utf-8 fileformat=unix
-au BufRead *.go call s:gofiletype_pre()
-au BufReadPost *.go call s:gofiletype_post()
+let g:go_fmt_command = "goimports"
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
