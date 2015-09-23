@@ -321,10 +321,31 @@ PERL_MM_OPT="INSTALL_BASE=/Users/nyxtom/perl5"; export PERL_MM_OPT;
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 #eval "$($HOME/.rbl/bin/rbl init -)"
-source kvm.sh
+#source kvm.sh
 
 # The next line updates PATH for the Google Cloud SDK.
-source '/Users/nyxtom/google-cloud-sdk/path.bash.inc'
+#source '/Users/nyxtom/google-cloud-sdk/path.bash.inc'
 
 # The next line enables bash completion for gcloud.
-source '/Users/nyxtom/google-cloud-sdk/completion.bash.inc'
+#source '/Users/nyxtom/google-cloud-sdk/completion.bash.inc'
+
+# The next line will help with built-in shell aliases used for work usually
+source $HOME/dotfiles/evernote-aliases.sh
+export PATH="$HOME/DevTools/bin:$PATH"
+
+alias tags="git for-each-ref --sort=taggerdate --format '%(refname) %(taggerdate)' refs/tags"
+
+function glog {
+    git log --all --author="`git config --get user.email`" --pretty="%h : %ar :%d %s %n%b" $@
+}
+
+function merged {
+    if [ "$1" = "-d" ] || [ "$1" = "--delete" ]; then
+        git branch --merged | grep -v "\*" | xargs -n 1 git branch -d
+    else
+        git branch --merged | grep -v "\*"
+    fi
+}
+
+
+. /Users/tholloway/torch/install/bin/torch-activate

@@ -19,7 +19,7 @@ set modelines=0
 
 " Enable Syntax Colors
 syntax on
-colors delek
+colors anderson
 set nocursorline
 set nocursorcolumn
 set ttyfast
@@ -357,5 +357,6 @@ set hlsearch
 
 " GOLANG
 let g:go_fmt_command = "goimports"
+au BufRead,BufNewFile *.go set filetype=go 
 au FileType go nmap <Leader>gd <Plug>(go-doc)
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
