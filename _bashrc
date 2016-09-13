@@ -148,8 +148,6 @@ fi
 
 export PATH
 
-
-
 PYTHONSTARTUP=~/.pythonrc.py
 export PYTHONSTARTUP
 
@@ -196,7 +194,6 @@ PATH=$PATH:$GOPATH/bin
 export PATH
 export MAXOSX_DEPLOYMENT_TARGET=10.6
 export WORKON_HOME=$HOME/.virtualenvs
-
 
 function qt() {
 	TESTS="$@"
@@ -247,9 +244,6 @@ unalias st 2> /dev/null
 unalias clearpyc 2> /dev/null
 unalias rmo 2> /dev/null
 unalias runtests 2> /dev/null
-alias gremlin='gremlin.sh'
-alias runtestsm3='/Library/FRameworks/Mono.framework/Versions/3.0.10/bin/mono --runtime=v4.0 $UNIXNUVIS/src/packages/NUnit.Runners.2.6.1/tools/nunit-console.exe $UNIXNUVIS/src/Nuvis.Tests/bin/Debug/Nuvis.Tests.dll'
-alias runtests='/Library/FRameworks/Mono.framework/Versions/Current/bin/mono --runtime=v4.0 $UNIXNUVIS/src/packages/NUnit.Runners.2.6.1/tools/nunit-console.exe $UNIXNUVIS/src/Nuvis.Tests/bin/Debug/Nuvis.Tests.dll'
 alias st='git status'
 alias branches='git branch -a | sed -Ee "s:^\*? *::" | sed -Ee "s:^(remotes/)?origin/::g" | grep -v "HEAD -> origin/master" | sort | uniq'
 alias pull='git pull'
@@ -259,45 +253,6 @@ alias gdiff='git diff'
 alias clearpyc='find . -name "*.pyc" -exec rm "{}" ";"'
 alias rmo="find . -name *.orig -exec rm '{}' ';'"
 alias commit='git commit -m'
-
-# NUVIS ALIAS
-#alias mongo-system-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-system-live.nuviapp.com'
-#alias mongo-system2-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-system2-live.nuviapp.com'
-#alias mongo-stats-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-stats-live.nuviapp.com'
-#alias mongo-stats2-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-stats2-live.nuviapp.com'
-#alias mongo-profile-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-profile-live.nuviapp.com'
-#alias mongo-profile2-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-profile2-live.nuviapp.com'
-#alias mongo-social-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-social-live.nuviapp.com'
-#alias mongo-social2-live='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-social2-live.nuviapp.com'
-#alias mongo-fractal-test='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-fractal-test.nuviapp.com'
-
-#alias livecli-nuvi-system='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-system-live.nuviapp.com -t "mongo localhost/admin -unuvicorp -pnuvitweets1337"'
-#alias livecli-nuvi-stats='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-stats-live.nuviapp.com -t "mongo localhost/admin -unuvicorp -pnuvitweets1337"'
-#alias livecli-nuvi-profiles='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-profile-live.nuviapp.com -t "mongo localhost/admin -unuvicorp -pnuvitweets1337"'
-#alias livecli-nuvi-social='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-social2-live.nuviapp.com -t "mongo localhost/admin -unuvicorp -pnuvitweets1337"'
-
-#alias workers01-live='ssh -i ~/.ec2/nuvi.pem ec2-user@workers01-live.nuviapp.com'
-#alias workers02-live='ssh -i ~/.ec2/nuvi.pem ec2-user@workers02-live.nuviapp.com'
-#alias workers03-live='ssh -i ~/.ec2/nuvi.pem ec2-user@workers03-live.nuviapp.com'
-#alias workers04-live='ssh -i ~/.ec2/nuvi.pem ec2-user@workers04-live.nuviapp.com'
-#alias redis-live='ssh -i ~/.ec2/nuvi.pem ec2-user@redis-live.nuviapp.com -t "redis-cli"'
-#alias redis-stats-live='ssh -i ~/.ec2/nuvi.pem ec2-user@redis-stats-live.nuviapp.com -t "redis-cli"'
-#alias redis-stats-live-db1='ssh -i ~/.ec2/nuvi.pem ec2-user@redis-stats-live.nuviapp.com -t "redis-cli -n 1"'
-#alias redis-supercache-live='ssh -i ~/.ec2/nuvi.pem ec2-user@redis-supercache-live.nuviapp.com -t "redis-cli"'
-#alias redis-dev='ssh -i ~/.ec2/nuvi.pem ec2-user@redis-dev.nuviapp.com -t "redis-cli"'
-
-#alias mongo-dev='ssh -i ~/.ec2/nuvi.pem ec2-user@mongo-dev.nuviapp.com'
-#alias iknow-live='ssh -i ~/.ec2/nuvi.pem ec2-user@iknow-live.nuviapp.com'
-#alias iknow-dev='ssh -i ~/.ec2/nuvi.pem ec2-user@iknow-dev.nuviapp.com'
-#alias workers-dev='ssh -i ~/.ec2/nuvi.pem ec2-user@workers-dev.nuviapp.com'
-#alias util='ssh -i ~/.ec2/nuvi.pem ec2-user@util.nuviapp.com'
-
-#export UNIXNUVIS='/users/nyxtom/nuvi/nuvis'
-export PHANTOMJS='/usr/local/Cellar/phantomjs/1.9.0/'
-#source $UNIXNUVIS/scripts/bash/buildx
-#export NUVIPEM='~/.ec2/nuvi.pem'
-#export IKNOW=~/nuvi/iknow
-#export IKNOWLOG=~/nuvi/iknowlog
 
 function sedeasy {
     sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
@@ -311,17 +266,11 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/Current/share/aclocal"
 #export PATH="/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH"
-export TREETAGGER="/Users/nyxtom/Public/tree-tagger/cmd/"
 #export DYLD_FALLBACK_LIBRARY_PATH=/Library/Frameworks/Mono.framework/Versions/Current/lib:/lib:/usr/lib
 
 
 PERL_MB_OPT="--install_base \"/Users/nyxtom/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/nyxtom/perl5"; export PERL_MM_OPT;
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-#eval "$($HOME/.rbl/bin/rbl init -)"
-#source kvm.sh
 
 # The next line updates PATH for the Google Cloud SDK.
 #source '/Users/nyxtom/google-cloud-sdk/path.bash.inc'
