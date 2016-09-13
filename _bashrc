@@ -330,7 +330,6 @@ export PATH="/usr/local/heroku/bin:$PATH"
 #source '/Users/nyxtom/google-cloud-sdk/completion.bash.inc'
 
 # The next line will help with built-in shell aliases used for work usually
-source $HOME/dotfiles/evernote-aliases.sh
 export PATH="$HOME/DevTools/bin:$PATH"
 
 alias tags="git for-each-ref --sort=taggerdate --format '%(refname) %(taggerdate)' refs/tags"
@@ -346,6 +345,3 @@ function merged {
         git branch --merged | grep -v "\*"
     fi
 }
-
-
-. /Users/tholloway/torch/install/bin/torch-activate
