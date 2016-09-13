@@ -268,7 +268,6 @@ export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/Current/sha
 #export PATH="/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH"
 #export DYLD_FALLBACK_LIBRARY_PATH=/Library/Frameworks/Mono.framework/Versions/Current/lib:/lib:/usr/lib
 
-
 PERL_MB_OPT="--install_base \"/Users/nyxtom/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/nyxtom/perl5"; export PERL_MM_OPT;
 
@@ -277,9 +276,6 @@ PERL_MM_OPT="INSTALL_BASE=/Users/nyxtom/perl5"; export PERL_MM_OPT;
 
 # The next line enables bash completion for gcloud.
 #source '/Users/nyxtom/google-cloud-sdk/completion.bash.inc'
-
-# The next line will help with built-in shell aliases used for work usually
-export PATH="$HOME/DevTools/bin:$PATH"
 
 alias tags="git for-each-ref --sort=taggerdate --format '%(refname) %(taggerdate)' refs/tags"
 
