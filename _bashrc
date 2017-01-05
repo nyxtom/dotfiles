@@ -329,3 +329,7 @@ merged() {
         git branch --merged | grep -v "\*"
     fi
 }
+
+weather() {
+    curl "wttr.in/$1"
+}

@@ -19,7 +19,7 @@ set modelines=0
 
 " Enable Syntax Colors
 syntax on
-colors anderson
+colors ir_black
 set nocursorline
 set nocursorcolumn
 set ttyfast

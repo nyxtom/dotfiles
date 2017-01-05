@@ -40,7 +40,6 @@ if exists("syntax_on")
 endif
 
 let colors_name = "anderson"
-set background=dark
 
 if &t_Co >= 256 || has("gui_running")
     hi Normal         ctermbg=0  ctermfg=7    cterm=NONE      guibg=#363432 guifg=#c5beba gui=NONE
