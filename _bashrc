@@ -1,5 +1,5 @@
 # If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+#[ -z "$PS1" ] && return
 
 #osx color terminal
 export CLICOLOR=1
@@ -208,46 +208,6 @@ export MAXOSX_DEPLOYMENT_TARGET=10.6
 export WORKON_HOME=$HOME/.virtualenvs
 
 
-qt() {
-	TESTS="$@"
-	if [[ -z $TESTS ]]; then
-	    TESTS=`find apps -maxdepth 1 -type d -not -name apps | sed -e "s/^apps\///"`
-	fi
-	./manage.py test --settings=test_settings $TESTS
-}
-
-pgrep() {
-	ps aux | grep $1 | grep -v grep
-}
-
-pkill() {
-	local pid
-	pid=$(ps ax | grep $1 | grep -v grep | awk '{ print $1 }')
-	kill -9 $pid
-	echo -n 'Killed ' $1 '(process ' $pid ')'
-}
-
-dock-on() {
-    defaults write com.apple.dashboard mcx-disabled -bool NO
-    killall Dock
-}
-dock-off() {
-    defaults write com.apple.dashboard mcx-disabled -bool YES
-    killall Dock
-}
-
-silent() {
-    ($@ 2>&1 > /dev/null) 2>&1 > /dev/null
-}
-
-shelter() {
-    mkvirtualenv --no-site-packages $@
-}
-
-simplekill() {
-    silent kill -9 `ps aux | egrep -i $1 | egrep -v "(grep)" | awk '{ print $2 }'`
-}
-
 unalias branches 2> /dev/null
 unalias pull 2> /dev/null
 unalias add 2> /dev/null
@@ -271,9 +231,6 @@ alias rmo="find . -name *.orig -exec rm '{}' ';'"
 alias commit='git commit -m'
 export PHANTOMJS='/usr/local/Cellar/phantomjs/1.9.0/'
 
-sedeasy() {
-    sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
-}
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 . /usr/local/etc/bash_completion.d/git-completion.bash
@@ -309,6 +266,13 @@ export workingfor="netcuras"
 export repos=~/$workingfor
 alias back2work="cd ~/$workingfor/node-core"
 alias sand="cd ~/sandbox"
+
+[ -z "$PS1" ] && return
+
+sedeasy() {
+    sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
+}
+
 work() {
     cd $repos/node-core
     export NODE_MONGOOSE_MIGRATIONS_CONFIG="./database.js"
@@ -333,3 +297,36 @@ merged() {
 weather() {
     curl "wttr.in/$1"
 }
+
+pgrep() {
+	ps aux | grep $1 | grep -v grep
+}
+
+pkill() {
+	local pid
+	pid=$(ps ax | grep $1 | grep -v grep | awk '{ print $1 }')
+	kill -9 $pid
+	echo -n 'Killed ' $1 '(process ' $pid ')'
+}
+
+dockon() {
+    defaults write com.apple.dashboard mcx-disabled -bool NO
+    killall Dock
+}
+dockoff() {
+    defaults write com.apple.dashboard mcx-disabled -bool YES
+    killall Dock
+}
+
+silent() {
+    ($@ 2>&1 > /dev/null) 2>&1 > /dev/null
+}
+
+shelter() {
+    mkvirtualenv --no-site-packages $@
+}
+
+simplekill() {
+    silent kill -9 `ps aux | egrep -i $1 | egrep -v "(grep)" | awk '{ print $2 }'`
+}
+
