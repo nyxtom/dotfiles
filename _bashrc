@@ -61,7 +61,7 @@ git_status() {
     [[ -n $(egrep '^.[MD]' <<<"$status") ]] && output="$output!"
     [[ -n $(egrep '^\?\?' <<<"$status") ]] && output="$output?"
     [[ -n $(git stash list) ]] && output="${output}#"
-    [[ -n $(git log --not --remotes) ]] && output="${output}P"
+    [[ -n $(git log --branches --not --remotes) ]] && output="${output}^"
     [[ -n $output ]] && output="$output"  # separate from branch name
     echo $output
 }
