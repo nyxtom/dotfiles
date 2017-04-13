@@ -104,6 +104,7 @@ git_prompt() {
 }
 
 PS1="\[\033[01;34m\]\w\[\033[00m\] \$(git_prompt)\n${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]\$ "
+
 #export PS1="$PROMPT_COLOR\u@\h $USER_INFO_ARROW$DIRECTORY_COLOR \W $DIRECTORY_ARROW$BRANCH_COLOR ⭠ \$(parse_git_branch) $ARROW_BRANCH\n$PROMPT_COLOR\$$BLACK "
 
 # If this is an xterm set the title to user@host:dir
@@ -336,6 +337,10 @@ alias back2work="cd ~/$workingfor/node-core"
 alias sand="cd ~/sandbox"
 
 [ -z "$PS1" ] && return
+
+vpn() {
+    sudo openconnect --authgroup=$workingfor $1
+}
 
 sedeasy() {
     sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
