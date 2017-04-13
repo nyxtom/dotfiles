@@ -316,6 +316,10 @@ export TREETAGGER="/Users/nyxtom/Public/tree-tagger/cmd/"
 PERL_MB_OPT="--install_base \"/Users/nyxtom/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/nyxtom/perl5"; export PERL_MM_OPT;
 
+### Add historian from jcsalterego/historian
+export PATH="$PATH:/Users/nyxtom/dotfiles/historian"
+alias hist="/Users/nyxtom/dotfiles/historian/hist"
+
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 export HOMEBREW_GITHUB_API_TOKEN="347d9626d51c173b3060db6b63e4445788b7bb17"
