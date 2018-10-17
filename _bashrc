@@ -262,3 +262,8 @@ export FZF_DEFAULT_COMMAND='rg --files --glob "!.git/*"'
 
 # disable apple press/hold for alernative characters, speed up keyrepeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+# start tmux if available
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+  tmux attach || exec tmux
+fi
