@@ -166,6 +166,7 @@ set hidden
 set nobackup
 set nowritebackup
 set noswapfile
+set clipboard=unnamed
 
 " Prefer unix fileformat defaults
 set fileformats=unix,dos,mac
