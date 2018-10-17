@@ -1,6 +1,7 @@
 [user]
 	name = Thomas Holloway
-	email = nyxtom@gmail.com
+	email = nyxtom@pm.me
+	signingkey = A7FB50403C640EF1
 [color]
 	ndiff = auto
 	status = auto
@@ -16,3 +17,17 @@
 	tool = kdiff3
 [hub]
 	protocol = https
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	p = pull
+	a = add
+[fetch]
+	prune = true

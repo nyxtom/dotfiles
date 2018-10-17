@@ -1,8 +1,6 @@
 # If not running interactively, don't do anything
 #[ -z "$PS1" ] && return
 
-#osx color terminal
-export CLICOLOR=1
 # don't put duplicate lines in the history. See bash(1) for more options
 # don't overwrite GNU Midnight Commander's setting of `ignorespace'.
 HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
@@ -22,8 +20,6 @@ shopt -s checkwinsize
 if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
-
-#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
 # Adds the current branch to the bash prompt when the working directory is
 # part of a Git repository. Includes color-coding and indicators to quickly
@@ -60,7 +56,7 @@ git_status() {
     local branch=$(git_branch)
     [[ -n $(egrep '^[MADRC]' <<<"$status") ]] && output="$output+"
     [[ -n $(egrep '^.[MD]' <<<"$status") ]] && output="$output!"
-    [[ -n $(egrep '^\?\?' <<<"$status") ]] && output="$output?"
+    [[ -n $(egrep '^\?\?' <<<"$status") ]] && output="$output!"
     [[ -n $(git stash list) ]] && output="${output}#"
     [[ -n $(git log $branch --not --remotes) ]] && output="${output}^"
     [[ -n $output ]] && output="$output"  # separate from branch name
@@ -104,8 +100,6 @@ git_prompt() {
 }
 
 PS1="\[\033[01;34m\]\w\[\033[00m\] \$(git_prompt)\n${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]\$ "
-
-#export PS1="$PROMPT_COLOR\u@\h $USER_INFO_ARROW$DIRECTORY_COLOR \W $DIRECTORY_ARROW$BRANCH_COLOR ⭠ \$(parse_git_branch) $ARROW_BRANCH\n$PROMPT_COLOR\$$BLACK "
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -169,25 +163,6 @@ case $TERM in
 
 esac
 
-# dircolors... make sure that we have a color terminal, dircolors exists, and ls supports it.
-if $TERM_IS_COLOR && ( dircolors --help && ls --color ) &> /dev/null; then
-  # For some reason, the unixs machines need me to use $HOME instead of ~
-  # List files from highest priority to lowest.  As soon as the loop finds one that works, it will exit.
-  for POSSIBLE_DIR_COLORS in "$HOME/.dir_colors" "/etc/DIR_COLORS"; do
-    [[ -f "$POSSIBLE_DIR_COLORS" ]] && [[ -r "$POSSIBLE_DIR_COLORS" ]] && eval `dircolors -b "$POSSIBLE_DIR_COLORS"` && break
-  done
-
-  alias ls="ls --color=auto"
-  alias ll="ls --color=auto -l"
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
-else
-  # No color, so put a slash at the end of directory names, etc. to differentiate.
-  alias ls="ls -F"
-  alias ll="ls -lF"
-fi
-
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -199,155 +174,51 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
-# Set $TERM for libvte terminals that set $TERM wrong (like gnome-terminal)
-{
-  [ "_$TERM" = "_xterm" ] && type ldd && type grep && type tput && [ -L "/proc/$PPID/exe" ] && {
-    if ldd /proc/$PPID/exe | grep libvte; then
-      if [ "`tput -Txterm-256color colors`" = "256" ]; then
-        TERM=xterm-256color
-      elif [ "`tput -Txterm-256color colors`" = "256" ]; then
-        TERM=xterm-256color
-      elif tput -T xterm; then
-        TERM=xterm
-      fi
-    fi
-  }
-} >/dev/null 2>/dev/null
 
-venwrap=`type -P virtualenvwrapper_bashrc`
-if [ "$venwrap" != "" ]; then
-    source $venwrap
-fi
-
-# osx vim
-if [ -x "/Applications/MacVim.app/Contents/MacOS/Vim" ]; then
-    PATH=/Applications/MacVim.app/Contents/MacOS/:$PATH
-fi
-
-export PATH
-
-
-
-PYTHONSTARTUP=~/.pythonrc.py
-export PYTHONSTARTUP
-
-MAXENTPATH=/usr/local/maxent/
-export MAXENTPATH
-
-parse_svn_branch() {
-  parse_svn_url | sed -e 's#^'"$(parse_svn_repository_root)"'##g' | awk -F / '{print "(svn::"$1 "/" $2 ")"}'
-}
-parse_svn_url() {
-  svn info 2>/dev/null | sed -ne 's#^URL: ##p'
-}
-parse_svn_repository_root() {
-  svn info 2>/dev/null | sed -ne 's#^Repository Root: ##p'
-}
-
-# Add git and svn branch names
-#export PS1="$PS1\$(parse_git_branch)\$(parse_svn_branch) "
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-    . /etc/bash_completion
-fi
-
-venwrap=`type -P virtualenvwrapper_bashrc`
-if [ "$venwrap" != "" ]; then
-    source $venwrap
-fi
 export GOPATH=~/go
-PATH=$PATH:/var/lib/gems/1.9.1/gems/haml-3.0.4/bin
 PATH=$PATH:/usr/local/sbin/
 PATH=$PATH:/usr/local/bin
 PATH=$PATH:/usr/local/cuda/bin
-PATH=$PATH:~/.virtualenvs/prw
-PATH=$PATH:~/.gem/ruby/1.8/bin
 PATH=$PATH:$HOME/local/node/bin
 PATH=$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin
-PATH=$PATH:/usr/local/share/python
-PATH=$PATH:~/Public/titan/bin
-PATH=$PATH:~/spark-1.0.0/bin
 PATH=$PATH:$GOPATH/bin
 PATH=$PATH:~/bin
 export PATH
-export MAXOSX_DEPLOYMENT_TARGET=10.6
-export WORKON_HOME=$HOME/.virtualenvs
+export NODE_PRESERVE_SYMLINKS=1
 
-
+# aliasing for git
 unalias branches 2> /dev/null
 unalias pull 2> /dev/null
+unalias st 2> /dev/null
+unalias co 2> /dev/null
 unalias add 2> /dev/null
 unalias merge 2> /dev/null
 unalias gdiff 2> /dev/null
-unalias st 2> /dev/null
-unalias clearpyc 2> /dev/null
-unalias rmo 2> /dev/null
-unalias runtests 2> /dev/null
-alias gremlin='gremlin.sh'
-#alias runtestsm3='/Library/FRameworks/Mono.framework/Versions/3.0.10/bin/mono --runtime=v4.0 $UNIXNUVIS/src/packages/NUnit.Runners.2.6.1/tools/nunit-console.exe $UNIXNUVIS/src/Nuvis.Tests/bin/Debug/Nuvis.Tests.dll'
-#alias runtests='/Library/FRameworks/Mono.framework/Versions/Current/bin/mono --runtime=v4.0 $UNIXNUVIS/src/packages/NUnit.Runners.2.6.1/tools/nunit-console.exe $UNIXNUVIS/src/Nuvis.Tests/bin/Debug/Nuvis.Tests.dll'
-alias st='git status'
+unalias commit 2> /dev/null
 alias branches='git branch -a --no-merged | sed -Ee "s:^\*? *::" | sed -Ee "s:^(remotes/)?origin/::g" | grep -v "HEAD -> origin/master" | sort | uniq'
+alias pull='git pull'
+alias st='git status'
+alias co='git commit'
 alias pull='git pull'
 alias add='git add'
 alias merge='git merge'
 alias gdiff='git diff'
-alias clearpyc='find . -name "*.pyc" -exec rm "{}" ";"'
-alias rmo="find . -name *.orig -exec rm '{}' ';'"
 alias commit='git commit -m'
-export PHANTOMJS='/usr/local/Cellar/phantomjs/1.9.0/'
-
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 . /usr/local/etc/bash_completion.d/git-completion.bash
 fi
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-export ACLOCAL_FLAGS="-I /Library/Frameworks/Mono.framework/Versions/Current/share/aclocal"
-#export PATH="/Library/Frameworks/Mono.framework/Versions/Current/bin:$PATH"
-export TREETAGGER="/Users/nyxtom/Public/tree-tagger/cmd/"
-#export DYLD_FALLBACK_LIBRARY_PATH=/Library/Frameworks/Mono.framework/Versions/Current/lib:/lib:/usr/lib
-
-
-PERL_MB_OPT="--install_base \"/Users/nyxtom/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/Users/nyxtom/perl5"; export PERL_MM_OPT;
-
-### Add historian from jcsalterego/historian
-export PATH="$PATH:/Users/nyxtom/dotfiles/historian"
-alias hist="/Users/nyxtom/dotfiles/historian/hist"
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-export HOMEBREW_GITHUB_API_TOKEN="347d9626d51c173b3060db6b63e4445788b7bb17"
-#eval "$($HOME/.rbl/bin/rbl init -)"
-#source kvm.sh
-
-# The next line updates PATH for the Google Cloud SDK.
-#source '/Users/nyxtom/google-cloud-sdk/path.bash.inc'
-
-# The next line enables bash completion for gcloud.
-#source '/Users/nyxtom/google-cloud-sdk/completion.bash.inc'
-
-#alias tags="git for-each-ref --sort=taggerdate --format '%(refname) %(taggerdate)' refs/tags"
-
 # alias for starting work
 export workingfor="netcuras"
+export workuser="tom.holloway"
 export repos=~/$workingfor
-alias back2work="cd ~/$workingfor/node-core"
-alias sand="cd ~/sandbox"
+export GIT_REPO_BASE=$repos
 
 [ -z "$PS1" ] && return
 
 vpn() {
-    sudo openconnect --authgroup=$workingfor $1
-}
-
-sedeasy() {
-    sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
+    sudo openconnect --authgroup=$workingfor $1 --user=$workuser --passwd-on-stdin
 }
 
 work() {
@@ -359,51 +230,14 @@ work() {
     fi
 }
 
-glog() {
-    git log --all --author="`git config --get user.email`" --pretty="%h : %ar :%d %s %n%b" $@
-}
+# --files: List files that would be searched but do not search
+# --no-ignore: Do not respect .gitignore, etc...
+# --hidden: Search hidden files and folders
+# --follow: Follow symlinks
+# --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 
-merged() {
-    if [ "$1" = "-d" ] || [ "$1" = "--delete" ]; then
-        git branch --merged | grep -v "\*" | xargs -n 1 git branch -d
-    else
-        git branch --merged | grep -v "\*"
-    fi
-}
+export FZF_DEFAULT_COMMAND='rg --files --glob "!.git/*"'
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-weather() {
-    curl "wttr.in/$1"
-}
-
-pgrep() {
-	ps aux | grep $1 | grep -v grep
-}
-
-pkill() {
-	local pid
-	pid=$(ps ax | grep $1 | grep -v grep | awk '{ print $1 }')
-	kill -9 $pid
-	echo -n 'Killed ' $1 '(process ' $pid ')'
-}
-
-dockon() {
-    defaults write com.apple.dashboard mcx-disabled -bool NO
-    killall Dock
-}
-dockoff() {
-    defaults write com.apple.dashboard mcx-disabled -bool YES
-    killall Dock
-}
-
-silent() {
-    ($@ 2>&1 > /dev/null) 2>&1 > /dev/null
-}
-
-shelter() {
-    mkvirtualenv --no-site-packages $@
-}
-
-simplekill() {
-    silent kill -9 `ps aux | egrep -i $1 | egrep -v "(grep)" | awk '{ print $2 }'`
-}
-
+# disable apple press/hold for alernative characters, speed up keyrepeat
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false

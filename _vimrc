@@ -1,362 +1,230 @@
-set nocompatible
-set backspace=indent,eol,start
+"============================================
+"         VIM 8+ Default Behavior
+"===========================================
 
-" Add xptemplate global personal directory value
-if has("unix")
-  set runtimepath+=~/.vim/personal
+" Use Vim settings, rather than Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+" Avoid side effects when it was already reset.
+if &compatible
+  set nocompatible
 endif
 
-" Menus
-" This must happen before the syntax system is enabled
-set mousemodel=popup
+" When the +eval feature is missing, the set command above will be skipped.
+" Use a trick to reset compatible only when the +eval feature is missing.
+silent! while 0
+  set nocompatible
+silent! endwhile
 
-" Better modes.  Remeber where we are, support yankring
-" set viminfo=!,'100,\"100,:20,<50,s10,h,n~/.viminfo
+" Allow backspacing over everything in insert mode.
+set backspace=indent,eol,start
 
-" The modelines bit prevents some security exploits having to do with
-" modelines in files.
-set modelines=0
+set history=200		" keep 200 lines of command line history
+set ruler		" show the cursor position all the time
+set showcmd		" display incomplete commands
+set wildmenu		" display completion matches in a status line
 
-" Enable Syntax Colors
-syntax on
-colors ir_black
-set nocursorline
-set nocursorcolumn
-set ttyfast
-" The PC is fast enough, do syntax highlight syncing from start
-autocmd BufEnter * :syntax sync fromstart
+set ttimeout		" time out for key codes
+set ttimeoutlen=100	" wait up to 100ms after Esc for special key
 
-source ~/.vim/autoload/pathogen.vim
-execute pathogen#infect()
-set runtimepath^=~/.vim/bundle/ctrlp.vim
+" Show @@@ in the last line if it is truncated.
+set display=truncate
 
-" Don't write backup files or swap files
-set nobackup
-set noswapfile
-
-" Remember cursor position
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-
-" enable automatic title setting for terminals
-set title
-set titleold="Terminal"
-set titlestring=%F\ -\ Vim
-
-" disable wrapping of long lines
-set nowrap
-
-" Pathogen
-filetype off
-call pathogen#infect()
-call pathogen#helptags() " generate helptags for everything in 'runtimepath'
-filetype plugin indent on
-
-" sets leader to ',' and localleader to "\"
-let mapleader=","
-let maplocalleader="\\"
-
-" activate a permanent ruler and disable Toolbar, and add line
-" highlightng as well as numbers.
-" And disable the sucking pydoc preview window for the omni completion
-" also highlight current line and disable the blinking cursor.
-set ruler
-set guioptions-=T " Don't show window toolbar
-set completeopt-=preview
-set gcr=a:blinkon0
-
-" customize the wildmenu
-set wildmenu
-set wildignore=*.dll,*.o,*.pyc,*.bak,*.exe,*.jpg,*.jpeg,*.png,*.gif,*$py.class,*.class
-set wildmode=list:full
-
-" change working directory automatically
-" disabled for mapleader that makes this explicit
-"" set autochdir
-
-" quicker window switching
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-
-" arrow keys move visible lines
-inoremap <Down> <C-R>=pumvisible() ? "\<lt>Down>" : "\<lt>C-O>gj"<CR>
-inoremap <Up> <C-R>=pumvisible() ? "\<lt>Up>" : "\<lt>C-O>gk"<CR>
-nnoremap <Down> gj
-nnoremap <Up> gk
-vnoremap <Down> gj
-vnoremap <Up> gk
-
-" Search fixes
-" Lowercase is case insensitive, mixed case is case sensitive
-set ignorecase
-set smartcase
-" And be global by default
-set gdefault
-" Highlighting and incremental search
-set hlsearch
-set incsearch
-" hide matches on <leader>space
-nnoremap <leader><space> :nohlsearch<cr>
-
-" tab for brackets
-nnoremap <tab> %
-vnoremap <tab> %
-
-" split edit vimrc
-nnoremap <leader>ev <C-w><C-s><C-l>:e $MYVIMRC<CR>
-
-" Remove trailing whitespace on <leader>S
-nnoremap <leader>S :%s/\s\+$//<cr>:let @/=''<CR>
-
-" Ack on <leader>a
-nnoremap <leader>a :Ack
-
-
-" <leader>v selects the just pasted text
-nnoremap <leader>v V`]
-
-" NERDtree on <leader>t
-nnoremap N :NERDTreeToggle<CR>
-let NERDTreeIgnore=['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$', '\.o$']
-let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\.bak$', '\~$']
-let NERDTreeChDirMode=2 " CWD is changed whenever the tree root is changed
-
-" Tab navigation
-nnoremap <C-n> :tabnext<CR>
-nnoremap <C-p> :tabprev<CR>
-
-" QuickRun
-nnoremap <C-r> :QuickRun<CR>
-
-" Scratch
-"nmap <leader><tab> :Sscratch<CR><C-W>x<C-J>
-
-" Quit window on <leader>q
-nnoremap <leader>q :q<CR>
-
-" Copy to Lodgeit on ^d
-nnoremap <leader>p :Lodgeit<CR>
-
-" Set working directory
-nnoremap <leader>. :lcd %:p:h<CR>
-
-" Easy switching
-nnoremap <leader>th :set ft=htmldjango<CR>
-nnoremap <leader>tp :set ft=python<CR>
-nnoremap <leader>tj :set ft=javascript<CR>
-nnoremap <leader>tr :set ft=rst<CR>
-
-" Command-T support
-nnoremap <leader>o :CommandT<CR>
-
-" toggle between number and relative number on ,l
-nnoremap <leader>l :call ToggleRelativeAbsoluteNumber()<CR>
-function! ToggleRelativeAbsoluteNumber()
-  if &number
-    set relativenumber
-  else
-    set number
-  endif
-endfunction
-
-" Bubble single lines
-nmap <C-Up> [e
-nmap <C-Down> ]e
-" Bubble multiple lines
-vmap <C-Up> [egv
-vmap <C-Down> ]egv
-
-" Make the command line two lines high and change the statusline display to
-" something that looks useful.
-set cmdheight=2
-set laststatus=2
-set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
-set showcmd
-set number
-
-" Tab Settings
-set smarttab
-set tabstop=8
-
-" GUI Tab settings
-function! GuiTabLabel()
-  let label = ''
-  let buflist = tabpagebuflist(v:lnum)
-  if exists('t:title')
-    let label .= t:title . ' '
-  endif
-  let label .= '[' . bufname(buflist[tabpagewinnr(v:lnum) - 1]) . ']'
-  for bufnr in buflist
-    if getbufvar(bufnr, '&modified')
-      let label .= '+'
-      break
-    endif
-  endfor
-  return label
-endfunction
-set guitablabel=%{GuiTabLabel()}
-
-" utf-8 default encoding
-set enc=utf-8
-
-" prefer unix over windows over os9 formats
-set fileformats=unix,dos,mac
-
-" don't bell or blink
-set noerrorbells
-set vb t_vb=
-
-" keep some more lines for scope
+" Show a few lines of context around the cursor.  Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
 set scrolloff=5
 
-" hide some files and remove stupid help
-let g:netrw_list_hide='^\.,.\(pyc\|pyo\|o\)$'
-map <leader>b :Explore!<CR>
+" Do incremental searching when it's possible to timeout.
+if has('reltime')
+  set incsearch
+endif
 
-" Split management
-nnoremap <leader>w <C-w>v<C-w>l
-nnoremap <leader>W <C-w>s
-nnoremap <leader>s :new<CR>
+" Do not recognize octal numbers for Ctrl-A and Ctrl-X, most users find it
+" confusing.
+set nrformats-=octal " (default) vim 8+
 
-" ; is an alias for :
-"nnoremap ; :
+" Don't use Ex mode, use Q for formatting.
+" Revert with ":unmap Q".
+map Q gq
 
-" Get rid of help key mapping
-inoremap <F1> <ESC>
-nnoremap <F1> <ESC>
-vnoremap <F1> <ESC>
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+" Revert with ":iunmap <C-U>".
+inoremap <C-U> <C-G>u<C-U>
 
-" map :BufClose to :bq and configure it to open a file browser on close
-let g:BufClose_AltBuffer = '.'
-cnoreabbr <expr> bq 'BufClose'
+" In many terminal emulators the mouse works just fine.  By enabling it you
+" can position the cursor, Visually select and scroll with the mouse.
+if has('mouse')
+  set mouse=a
+endif
 
-" python support
-" --------------
-"  don't highlight exceptions and builtins. I love to override them in local
-"  scopes and it sucks ass if it's highlighted then. And for exceptions I
-"  don't really want to have different colors for my own exceptions ;-)
-autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8
-\ formatoptions+=croq softtabstop=4 ft=python.django
-\ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
-let python_highlight_all=1
-let python_highlight_exceptions=0
-let python_highlight_builtins=0
-autocmd FileType pyrex setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4 cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+" Switch syntax highlighting on when the terminal has colors or when using the
+" GUI (which always has colors).
+if &t_Co > 2 || has("gui_running")
+  " Revert with ":syntax off".
+  syntax on
 
-" ruby support
-" ------------
-autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+  " I like highlighting strings inside C comments.
+  " Revert with ":unlet c_comment_strings".
+  let c_comment_strings=1
+endif
 
-" php support
-" -----------
-autocmd FileType php setlocal shiftwidth=8 tabstop=8 softtabstop=8
-" cucumber support
-" -----------
-syntax on
-au BufNewFile,BufRead *.feature set filetype=cucumber expandtab shiftwidth=4 tabstop=4 softtabstop=4
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
 
-" template language support (SGML / XML too)
-" ------------------------------------------
-" and disable that stupid html rendering (like making stuff bold etc)
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  " Revert with ":filetype off".
+  filetype plugin indent on
 
-fun! s:SelectHTML()
-  let n = 1
-  while n < 50 && n < line("$")
-    " check for django
-    if getline(n) =~ '{%\s*\(extends\|load\|block\|if\|for\|include\|trans\)\>'
-      set ft=htmldjango
-      return
-    endif
-    let n = n + 1
-  endwhile
-  " go with html
-  set ft=html
-endfun
+  " Put these in an autocmd group, so that you can revert them with:
+  " ":augroup vimStartup | au! | augroup END"
+  augroup vimStartup
+    au!
 
-autocmd FileType html,xhtml,xml,htmldjango,htmljinja,eruby,mako setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
-autocmd BufNewFile,BufRead *.rhtml setlocal ft=eruby
-autocmd BufNewFile,BufRead *.mako setlocal ft=mako
-autocmd BufNewFile,BufRead *.tmpl setlocal ft=htmljinja
-autocmd BufNewFile,BufRead *.py_tmpl setlocal ft=python
-autocmd BufNewFile,BufRead *.html,*.htm  call s:SelectHTML()
-let html_no_rendering=1
+    " When editing a file, always jump to the last known cursor position.
+    " Don't do it when the position is invalid, when inside an event handler
+    " (happens when dropping a file on gvim) and for a commit message (it's
+    " likely a different one than last time).
+    autocmd BufReadPost *
+      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+      \ |   exe "normal! g`\""
+      \ | endif
 
-let g:closetag_default_xml=1
-autocmd FileType html,htmldjango,htmljinja,eruby,mako let b:closetag_html_style=1
-autocmd FileType html,xhtml,xml,htmldjango,htmljinja,eruby,mako source ~/.vim/scripts/closetag.vim
+  augroup END
 
-" CSS
-" ---
-autocmd FileType css setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
-
-" Java
-" ----
-autocmd FileType java setlocal shiftwidth=2 tabstop=8 softtabstop=2 expandtab
-
-" rst
-" ---
-autocmd BufNewFile,BufRead *.txt,*.md,*.rst setlocal ft=rst
-autocmd FileType rst setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
-\ formatoptions+=nqt textwidth=74
-
-" C#
-autocmd FileType cs setlocal tabstop=4 softtabstop=4 shiftwidth=4
-
-" .sh
-autocmd FileType sh setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-
-" C/C++
-autocmd FileType c setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-autocmd FileType cpp setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-autocmd FileType go setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-
-" vim
-" ---
-autocmd FileType vim setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
-
-" Javascript
-" ----------
-autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
-
-" JSON
-" ---------
-au BufNewFile,BufRead *.json set filetype=json expandtab shiftwidth=2 softtabstop=2 tabstop=8 autoindent formatoptions=tcq2l textwidth=78
-
-" Markdown
-" --------
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-
-" Scala
-" ----------
-fun! s:DetectScala()
-    if getline(1) == '#!/usr/bin/env scala'
-        set filetype=scala
-    endif
-endfun
-
-au BufRead,BufNewFile *.scala,*.sbt set filetype=scala
-au BufRead,BufNewFile * call s:DetectScala()
+endif " has("autocmd")
 
 
-" Less CSS
-" ----------
-syntax on
-au BufNewFile,BufRead *.less set filetype=less expandtab shiftwidth=4 tabstop=4 softtabstop=4
+"=============================================
+"            Plugins using vundle
+"=============================================
 
-set tags+=$HOME/.vim/tags/python.ctags
-set tags+=$HOME/.vim/tags/django.ctags
+set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=/usr/local/opt/fzf
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
 
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-inoremap <Nul> <C-x><C-o>
+" ------ Plugins -------
+Plugin 'scrooloose/nerdtree'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-commentary'
+Plugin 'Raimondi/delimitMate'
+Plugin 'Yggdroot/indentLine'
 
-" XPTemplate
-" ----------
-let g:scala_use_default_keymappings = 0
+" fzf+ripgrep in bashrc for insanely awesome search
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+
+" Zen mode
+Plugin 'junegunn/goyo.vim'
+Plugin 'amix/vim-zenroom2'
+
+" Color Themes
+Plugin 'flazz/vim-colorschemes'
+
+call vundle#end()
+colorscheme 1989
+
+"=============================================
+" sensible.vim/vim-sublime additional defaults
+"=============================================
+
+set sidescroll=1
+set autoindent
+set complete-=i
+set showmatch
+set showmode
+set smarttab
+set shiftround
+
+" Use <C-L> to clear highlighting of :set hlsearch
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+endif
+
+set laststatus=2
+set autoread
+
+set encoding=utf-8
+
+set tabstop=4 shiftwidth=4 expandtab
+
+set number
 set hlsearch
+set ignorecase
+set smartcase
 
-" GOLANG
-let g:go_fmt_command = "goimports"
-au BufRead,BufNewFile *.go set filetype=go 
-au FileType go nmap <Leader>gd <Plug>(go-doc)
-au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+set hidden
+
+set nobackup
+set nowritebackup
+set noswapfile
+
+" Prefer unix fileformat defaults
+set fileformats=unix,dos,mac
+
+set completeopt=menuone,longest,preview
+
+"=============================================
+"         Grouped Behavior Settings
+"=============================================
+
+" Exit editing mode with ctrl+c
+inoremap <C-c> <Esc>
+
+" -- Mapping Default leader/command
+map \ :
+let mapleader = ','
+
+" -- Tab behavior
+nnoremap <C-b> :tabprevious<CR>
+inoremap <C-b> <Esc>:tabprevious<CR>i
+nnoremap <C-n> :tabnext<CR>
+inoremap <C-n> <Esc>:tabnext<CR>i
+nnoremap <C-t> :tabnew<CR>
+inoremap <C-t> <Esc>:tabnew<CR>i
+nnoremap <C-k> :tabclose<CR>
+inoremap <C-k> <Esc>:tabclose<CR>i
+
+" -- Number/Toggle
+nnoremap <Leader>1 :set number<CR>
+nnoremap <Leader>0 :set nonumber<CR>
+
+"=============================================
+"         Plugin Configuration
+"=============================================
+
+" -- scrooloose/nerdtree
+nnoremap <C-\> :NERDTreeToggle<CR>
+
+" -- vim-airline/vim-airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme='badwolf'
+
+" -- airblade/vim-gitgutter
+nnoremap <Leader>g :GitGutterToggle<CR>
+
+" -- Yggdroot/indentLine
+let g:indentLine_setColors = 220
+let g:indentLine_enabled = 1
+
+" -- amix/vim-zenroom2
+nnoremap <silent> <leader>z :Goyo<cr>
+
+" -- junegunn/fzf
+nnoremap <C-p> :FZF<CR>
+
+command! -bang -nargs=* File
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+nnoremap <Leader>f :File<CR>
