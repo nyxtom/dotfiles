@@ -159,6 +159,8 @@ set hlsearch
 set ignorecase
 set smartcase
 
+set paste
+
 set hidden
 
 set nobackup

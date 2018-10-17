@@ -1,6 +1,9 @@
 # If not running interactively, don't do anything
 #[ -z "$PS1" ] && return
 
+# osx terminal colors
+export CLICOLOR=1
+
 # don't put duplicate lines in the history. See bash(1) for more options
 # don't overwrite GNU Midnight Commander's setting of `ignorespace'.
 HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
@@ -162,6 +165,24 @@ case $TERM in
   ;;
 
 esac
+
+# dircolors... make sure that we have a color terminal, dircolors exists, and ls supports it.
+if $TERM_IS_COLOR && ( dircolors --help && ls --color ) &> /dev/null; then
+  # For some reason, the unixs machines need me to use $HOME instead of ~
+  # List files from highest priority to lowest.  As soon as the loop finds one that works, it will exit.
+  for POSSIBLE_DIR_COLORS in "$HOME/.dir_colors" "/etc/DIR_COLORS"; do
+    [[ -f "$POSSIBLE_DIR_COLORS" ]] && [[ -r "$POSSIBLE_DIR_COLORS" ]] && eval `dircolors -b "$POSSIBLE_DIR_COLORS"` && break
+  done
+  alias ls="ls --color=auto"
+  alias ll="ls --color=auto -l"
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+else
+  # No color, so put a slash at the end of directory names, etc. to differentiate.
+  alias ls="ls -F"
+  alias ll="ls -lF"
+fi
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
