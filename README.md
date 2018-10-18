@@ -20,6 +20,7 @@ I've listed some requirements I want for a usable/sensible vim editor:
 - git diff while editing file in gutter: [vim-gitgutter](https://github.com/airblade/vim-gitgutter)
 - syntax/lint checker: [vim-syntastic](https://github.com/vim-syntastic/syntastic)
 - autocomplete/code completion: [YouCompleteMe](https://github.com/Valloric/YouCompleteMe)
-- jedi autocomplete for python: [jedi-vim](https://github.com/davidhalter/jedi-vim)
+- jedi autocomplete for python: [jedi-vim](https://github.com/davidhalter/jedi-vim) 
 - zen mode: [vim-zenroom2](https://github.com/amix/vim-zenroom2)
 - indent lines: [indentLine](https://github.com/Yggdroot/indentLine)
+- parameter completion for javascript: [jspc](https://github.com/othree/jspc.vim)

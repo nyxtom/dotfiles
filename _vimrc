@@ -101,34 +101,68 @@ endif " has("autocmd")
 "            Plugins using vundle
 "=============================================
 
-set rtp+=~/.vim/bundle/Vundle.vim
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs 
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
+endif
+
 set rtp+=/usr/local/opt/fzf
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin('~/.vim/plugged')
+
+function! DoRemote(arg)
+  UpdateRemotePlugins
+endfunction
 
 " ------ Plugins -------
-Plugin 'scrooloose/nerdtree'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-commentary'
-Plugin 'Raimondi/delimitMate'
-Plugin 'Yggdroot/indentLine'
+
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'scrooloose/nerdtree'
+Plug 'ryanoasis/vim-devicons'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-commentary'
+Plug 'Yggdroot/indentLine'
+
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install --g tern' }
+Plug 'carlitux/deoplete-ternjs', { 'on_ft': 'javascript' }
+Plug 'jiangmiao/auto-pairs'
+Plug 'ujihisa/neco-look'
+Plug 'othree/yajs.vim'
+Plug 'heavenshell/vim-jsdoc'
+Plug 'Quramy/vison'
+Plug 'othree/jspc.vim'
+
+" navigation/utils
+Plug 'terryma/vim-multiple-cursors'
+Plug 'christoomey/vim-tmux-navigator'
 
 " fzf+ripgrep in bashrc for insanely awesome search
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 " Zen mode
-Plugin 'junegunn/goyo.vim'
-Plugin 'amix/vim-zenroom2'
+Plug 'junegunn/goyo.vim'
+Plug 'amix/vim-zenroom2'
 
 " Color Themes
-Plugin 'flazz/vim-colorschemes'
+Plug 'gorodinskiy/vim-coloresque'
+Plug 'flazz/vim-colorschemes'
+Plug 'phanviet/sidonia'
 
-call vundle#end()
-colorscheme 1989
+call plug#end()
+
+" -- true color mode
+set termguicolors
+if &term =~# '^screen'
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+colorscheme sidonia
 
 "=============================================
 " sensible.vim/vim-sublime additional defaults
@@ -150,7 +184,7 @@ endif
 set laststatus=2
 set autoread
 
-set encoding=utf-8
+set encoding=UTF-8
 
 set tabstop=4 shiftwidth=4 expandtab
 
@@ -158,8 +192,6 @@ set number
 set hlsearch
 set ignorecase
 set smartcase
-
-set paste
 
 set hidden
 
@@ -171,7 +203,10 @@ set clipboard=unnamed
 " Prefer unix fileformat defaults
 set fileformats=unix,dos,mac
 
-set completeopt=menuone,longest,preview
+set splitbelow
+set completeopt+=menuone,noinsert,noselect
+set completeopt-=preview
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 "=============================================
 "         Grouped Behavior Settings
@@ -184,26 +219,32 @@ inoremap <C-c> <Esc>
 map \ :
 let mapleader = ','
 
-" -- Tab behavior
-nnoremap <C-b> :tabprevious<CR>
-inoremap <C-b> <Esc>:tabprevious<CR>i
-nnoremap <C-n> :tabnext<CR>
-inoremap <C-n> <Esc>:tabnext<CR>i
-nnoremap <C-t> :tabnew<CR>
-inoremap <C-t> <Esc>:tabnew<CR>i
-nnoremap <C-k> :tabclose<CR>
-inoremap <C-k> <Esc>:tabclose<CR>i
-
-" -- Number/Toggle
-nnoremap <Leader>1 :set number<CR>
-nnoremap <Leader>0 :set nonumber<CR>
+" -- buffer navigation / tmux
+nnoremap <C-u> :bprevious<CR>
+nnoremap <C-i> :bnext<CR>
+nnoremap <C-d> :bdelete<CR>
+nnoremap <leader>w :split<CR>
+nnoremap <leader>W :vsplit<CR>
 
 "=============================================
 "         Plugin Configuration
 "=============================================
 
+" -- tmux
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <C-j> :TmuxNavigateDown<CR>
+nnoremap <silent> <C-k> :TmuxNavigateUp<CR>
+nnoremap <silent> <C-l> :TmuxNavigateRight<CR>
+nnoremap <silent> <C-h> :TmuxNavigateLeft<CR>
+nnoremap <silent> <C-;> :TmuxNavigatePrevious<CR>
+tmap <C-j> <C-\><C-n>:TmuxNavigateDown<CR>
+tmap <C-k> <C-\><C-n>:TmuxNavigateUp<CR>
+tmap <C-l> <C-\><C-n>:TmuxNavigateRight<CR>
+tmap <C-h> <C-\><C-n>:TmuxNavigateLeft<CR>
+tmap <C-;> <C-\><C-n>:TmuxNavigatePrevious<CR>
+
 " -- scrooloose/nerdtree
-nnoremap <C-\> :NERDTreeToggle<CR>
+nmap <C-\> :NERDTreeToggle<CR>
 
 " -- vim-airline/vim-airline
 let g:airline#extensions#tabline#enabled = 1
@@ -219,6 +260,30 @@ let g:indentLine_enabled = 1
 
 " -- amix/vim-zenroom2
 nnoremap <silent> <leader>z :Goyo<cr>
+
+" -- supertab
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+let g:SuperTabClosePreviewOnPopupClose = 1
+
+" -- omni complete
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_ignore_case = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_camel_case = 1
+let g:deoplete#enable_refresh_always = 1
+let g:deoplete#max_abbr_width = 0
+let g:deoplete#max_menu_width = 0
+
+" -- javascript
+let g:jsdoc_allow_input_prompt = 1
+let g:jsdoc_input_description = 1
+let g:jsdoc_return = 0
+let g:jsdoc_return_type = 0
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
+let g:tern_map_keys = 1
+let g:vim_json_syntax_conceal = 0
+
 
 " -- junegunn/fzf
 nnoremap <C-p> :FZF<CR>
