@@ -152,17 +152,28 @@ Plug 'amix/vim-zenroom2'
 " Color Themes
 Plug 'gorodinskiy/vim-coloresque'
 Plug 'flazz/vim-colorschemes'
-Plug 'phanviet/sidonia'
+Plug 'JarrodCTaylor/spartan'
+Plug 'dim13/smyck.vim'
 
 call plug#end()
 
-" -- true color mode
+" =============================================
+"                colors/theming
+" =============================================
 set termguicolors
 if &term =~# '^screen'
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
-colorscheme sidonia
+colorscheme smyck
+highlight Pmenu guibg=#444444 ctermbg=6 ctermfg=0
+highlight PmenuSel guibg=#555555 ctermbg=4 ctermfg=7
+nnoremap <silent> <C-e>1 :colorscheme Thermopylae<CR>
+nnoremap <silent> <C-e>2 :colorscheme Immortals<CR>
+nnoremap <silent> <C-e>3 :colorscheme Spartan<CR>
+nnoremap <silent> <C-e>4 :colorscheme 1989<CR>
+nnoremap <silent> <C-e>5 :colorscheme smyck<CR>
+
 
 "=============================================
 " sensible.vim/vim-sublime additional defaults
@@ -176,9 +187,9 @@ set showmode
 set smarttab
 set shiftround
 
-" Use <C-L> to clear highlighting of :set hlsearch
-if maparg('<C-L>', 'n') ==# ''
-  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+" Use <C-f> to clear highlighting of :set hlsearch
+if maparg('<C-f>', 'n') ==# ''
+  nnoremap <silent> <C-f> :nohlsearch<CR><C-L>
 endif
 
 set laststatus=2
@@ -204,7 +215,7 @@ set clipboard=unnamed
 set fileformats=unix,dos,mac
 
 set splitbelow
-set completeopt+=menuone,noinsert,noselect
+set completeopt+=longest,menuone,noinsert,noselect
 set completeopt-=preview
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
@@ -249,7 +260,7 @@ nmap <C-\> :NERDTreeToggle<CR>
 " -- vim-airline/vim-airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='badwolf'
+let g:airline_theme='bubblegum'
 
 " -- airblade/vim-gitgutter
 nnoremap <Leader>g :GitGutterToggle<CR>
