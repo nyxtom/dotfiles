@@ -118,7 +118,7 @@ endfunction
 
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
@@ -185,6 +185,8 @@ set complete-=i
 set showmatch
 set showmode
 set smarttab
+set showbreak=↪\
+set linebreak
 set shiftround
 
 " Use <C-f> to clear highlighting of :set hlsearch
@@ -297,8 +299,6 @@ let g:vim_json_syntax_conceal = 0
 
 
 " -- junegunn/fzf
-nnoremap <C-p> :FZF<CR>
-
 command! -bang -nargs=* File
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
@@ -307,3 +307,38 @@ command! -bang -nargs=* File
   \   <bang>0)
 
 nnoremap <Leader>f :File<CR>
+
+" Files + devicons
+function! Fzf_dev()
+  let l:fzf_files_options = '--preview "rougify {2..} | head -'.&lines.'"'
+
+  function! s:files()
+    let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+    return s:prepend_icon(l:files)
+  endfunction
+
+  function! s:prepend_icon(candidates)
+    let l:result = []
+    for l:candidate in a:candidates
+      let l:filename = fnamemodify(l:candidate, ':p:t')
+      let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
+      call add(l:result, printf('%s %s', l:icon, l:candidate))
+    endfor
+
+    return l:result
+  endfunction
+
+  function! s:edit_file(item)
+    let l:pos = stridx(a:item, ' ')
+    let l:file_path = a:item[pos+1:-1]
+    execute 'silent e' l:file_path
+  endfunction
+
+  call fzf#run({
+        \ 'source': <sid>files(),
+        \ 'sink':   function('s:edit_file'),
+        \ 'options': '-m ' . l:fzf_files_options,
+        \ 'down':    '40%' })
+endfunction
+
+nnoremap <C-p> :call Fzf_dev()<CR>
