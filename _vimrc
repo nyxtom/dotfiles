@@ -102,7 +102,7 @@ endif " has("autocmd")
 "=============================================
 
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs 
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall
 endif
@@ -117,7 +117,7 @@ endfunction
 " ------ Plugins -------
 
 Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
@@ -126,34 +126,35 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-commentary'
 Plug 'Yggdroot/indentLine'
 
-Plug 'Shougo/unite.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install --g tern' }
 Plug 'carlitux/deoplete-ternjs', { 'on_ft': 'javascript' }
 Plug 'jiangmiao/auto-pairs'
-Plug 'ujihisa/neco-look'
+" Plug 'ujihisa/neco-look'
 Plug 'othree/yajs.vim'
 Plug 'heavenshell/vim-jsdoc'
 Plug 'Quramy/vison'
 Plug 'othree/jspc.vim'
+Plug 'ntpeters/vim-better-whitespace'
 
 " navigation/utils
 Plug 'terryma/vim-multiple-cursors'
 Plug 'christoomey/vim-tmux-navigator'
 
-" fzf+ripgrep in bashrc for insanely awesome search
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-
 " Zen mode
 Plug 'junegunn/goyo.vim'
 Plug 'amix/vim-zenroom2'
 
+" fzf+ripgrep in bashrc for insanely awesome search
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+
 " Color Themes
-Plug 'gorodinskiy/vim-coloresque'
-Plug 'flazz/vim-colorschemes'
-Plug 'JarrodCTaylor/spartan'
-Plug 'dim13/smyck.vim'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'sheerun/vim-polyglot'
+Plug 'trevordmiller/nova-vim'
+Plug 'miyakogi/seiya.vim'
 
 call plug#end()
 
@@ -165,15 +166,10 @@ if &term =~# '^screen'
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
-colorscheme smyck
-highlight Pmenu guibg=#444444 ctermbg=6 ctermfg=0
-highlight PmenuSel guibg=#555555 ctermbg=4 ctermfg=7
-nnoremap <silent> <C-e>1 :colorscheme Thermopylae<CR>
-nnoremap <silent> <C-e>2 :colorscheme Immortals<CR>
-nnoremap <silent> <C-e>3 :colorscheme Spartan<CR>
-nnoremap <silent> <C-e>4 :colorscheme 1989<CR>
-nnoremap <silent> <C-e>5 :colorscheme smyck<CR>
-
+highlight pmenu guibg=#666666 ctermbg=6 ctermfg=0
+highlight pmenusel guibg=#333333 ctermbg=4 ctermfg=7
+let g:nova_transparent = 1
+colorscheme nova
 
 "=============================================
 " sensible.vim/vim-sublime additional defaults
@@ -185,6 +181,7 @@ set complete-=i
 set showmatch
 set showmode
 set smarttab
+set breakindent
 set showbreak=↪\
 set linebreak
 set shiftround
@@ -219,25 +216,29 @@ set fileformats=unix,dos,mac
 set splitbelow
 set completeopt+=longest,menuone,noinsert,noselect
 set completeopt-=preview
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>"
 
 "=============================================
-"         Grouped Behavior Settings
+"         grouped behavior settings
 "=============================================
 
-" Exit editing mode with ctrl+c
-inoremap <C-c> <Esc>
+" exit editing mode with ctrl+c
+inoremap <c-c> <esc>
 
-" -- Mapping Default leader/command
+" -- mapping default leader/command
 map \ :
 let mapleader = ','
 
 " -- buffer navigation / tmux
-nnoremap <C-u> :bprevious<CR>
+nnoremap <c-u> :bprevious<cr>
 nnoremap <C-i> :bnext<CR>
 nnoremap <C-d> :bdelete<CR>
 nnoremap <leader>w :split<CR>
 nnoremap <leader>W :vsplit<CR>
+
+" -- saving
+map <leader>s :w<CR>
+nmap <leader>Q :q<CR>
 
 "=============================================
 "         Plugin Configuration
@@ -256,13 +257,33 @@ tmap <C-l> <C-\><C-n>:TmuxNavigateRight<CR>
 tmap <C-h> <C-\><C-n>:TmuxNavigateLeft<CR>
 tmap <C-;> <C-\><C-n>:TmuxNavigatePrevious<CR>
 
+" -- terminal mode
+let g:term_buf = 0
+function! Term_toggle()
+  if g:term_buf == bufnr("term_buf")
+    setlocal bufhidden=hide
+    close
+  else
+    bottomleft vnew
+    try
+      exec "buffer ".g:term_buf
+    catch
+      call termopen("bash", {"detach": 0})
+      let g:term_buf = bufnr("term_buf")
+    endtry
+  endif
+endfunction
+nnoremap <leader>` :call Term_toggle()<CR>
+
 " -- scrooloose/nerdtree
 nmap <C-\> :NERDTreeToggle<CR>
+nnoremap <leader>r :NERDTreeFind<CR>
+let g:NERDTreeMouseMode = 3
 
 " -- vim-airline/vim-airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='bubblegum'
+let g:airline_theme='papercolor'
 
 " -- airblade/vim-gitgutter
 nnoremap <Leader>g :GitGutterToggle<CR>
@@ -297,6 +318,9 @@ let g:tern#arguments = ["--persistent"]
 let g:tern_map_keys = 1
 let g:vim_json_syntax_conceal = 0
 
+" -- better-whitespace
+let g:better_whitespace_enabled=1
+let g:strip_whitespace_on_save=1
 
 " -- junegunn/fzf
 command! -bang -nargs=* File
@@ -308,6 +332,7 @@ command! -bang -nargs=* File
 
 nnoremap <Leader>f :File<CR>
 
+nnoremap <C-p> :FZF<CR>
 " Files + devicons
 function! Fzf_dev()
   let l:fzf_files_options = '--preview "rougify {2..} | head -'.&lines.'"'

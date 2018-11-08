@@ -225,6 +225,7 @@ alias add='git add'
 alias merge='git merge'
 alias gdiff='git diff'
 alias commit='git commit -m'
+alias imgcat='~/dotfiles/imgcat.sh'
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 . /usr/local/etc/bash_completion.d/git-completion.bash
@@ -260,10 +261,33 @@ work() {
 export FZF_DEFAULT_COMMAND='rg --files --glob "!.git/*"'
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
+__fzf_find()
+{
+__ehc $(fzf --tac --tiebreak=index | perl -ne 'm/^\s*([0-9]+)/ and print "!$1"')
+}
+
+__ehc()
+{
+if
+        [[ -n $1 ]]
+then
+        bind '"\er": redraw-current-line'
+        bind '"\e^": magic-space'
+        READLINE_LINE=${READLINE_LINE:+${READLINE_LINE:0:READLINE_POINT}}${1}${READLINE_LINE:+${READLINE_LINE:READLINE_POINT}}
+        READLINE_POINT=$(( READLINE_POINT + ${#1} ))
+else
+        bind '"\er":'
+        bind '"\e^":'
+fi
+}
+
+builtin bind -x '"\C-x2": __fzf_find';
+builtin bind '"\C-p": "\C-x2\e^\er"'
+
 # disable apple press/hold for alernative characters, speed up keyrepeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 # start tmux if available
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  tmux attach || exec tmux
-fi
+# if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+#   tmux attach || exec tmux
+# fi
