@@ -145,9 +145,10 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/goyo.vim'
 Plug 'amix/vim-zenroom2'
 
-" fzf+ripgrep in bashrc for insanely awesome search
+" fzf+ripgrep+ferret for insanely awesome search
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'wincent/ferret'
 
 " Color Themes
 Plug 'NLKNguyen/papercolor-theme'
@@ -155,6 +156,10 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'sheerun/vim-polyglot'
 Plug 'trevordmiller/nova-vim'
 Plug 'miyakogi/seiya.vim'
+Plug 'jdkanani/vim-material-theme'
+Plug 'hzchirs/vim-material'
+Plug 'ayu-theme/ayu-vim'
+Plug 'rainglow/vim'
 
 call plug#end()
 
@@ -168,8 +173,8 @@ if &term =~# '^screen'
 endif
 highlight pmenu guibg=#666666 ctermbg=6 ctermfg=0
 highlight pmenusel guibg=#333333 ctermbg=4 ctermfg=7
-let g:nova_transparent = 1
-colorscheme nova
+let g:nova_transparent = "NONE"
+colorscheme allure
 
 "=============================================
 " sensible.vim/vim-sublime additional defaults
@@ -229,6 +234,9 @@ inoremap <c-c> <esc>
 map \ :
 let mapleader = ','
 
+" -- current file
+nnoremap <leader>t :let @+= expand("%p")<cr>
+
 " -- buffer navigation / tmux
 nnoremap <c-u> :bprevious<cr>
 nnoremap <C-i> :bnext<CR>
@@ -283,7 +291,7 @@ let g:NERDTreeMouseMode = 3
 " -- vim-airline/vim-airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='papercolor'
+let g:airline_theme='nova'
 
 " -- airblade/vim-gitgutter
 nnoremap <Leader>g :GitGutterToggle<CR>
@@ -332,10 +340,18 @@ command! -bang -nargs=* File
 
 nnoremap <Leader>f :File<CR>
 
-nnoremap <C-p> :FZF<CR>
+nnoremap <silent> <leader>e :call Fzf_dev()<CR>
+
+" ripgrep
+if executable('rg')
+  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+  set grepprg=rg\ --vimgrep
+  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+endif
+
 " Files + devicons
 function! Fzf_dev()
-  let l:fzf_files_options = '--preview "rougify {2..} | head -'.&lines.'"'
+  let l:fzf_files_options = '--preview "bat --style=numbers,changes --color always {2..-1} | head -'.&lines.'"'
 
   function! s:files()
     let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
@@ -365,5 +381,3 @@ function! Fzf_dev()
         \ 'options': '-m ' . l:fzf_files_options,
         \ 'down':    '40%' })
 endfunction
-
-nnoremap <C-p> :call Fzf_dev()<CR>
