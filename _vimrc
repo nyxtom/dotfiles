@@ -117,7 +117,7 @@ endfunction
 " ------ Plugins -------
 
 Plug 'airblade/vim-gitgutter'
-" Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
