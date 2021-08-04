@@ -118,6 +118,7 @@ endfunction
 
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
@@ -125,21 +126,22 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-commentary'
 Plug 'Yggdroot/indentLine'
+Plug 'pangloss/vim-javascript'
+Plug 'evanleck/vim-svelte'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install && npm install --g tern' }
-Plug 'carlitux/deoplete-ternjs', { 'on_ft': 'javascript' }
+Plug 'neoclide/coc.nvim'
 Plug 'jiangmiao/auto-pairs'
 " Plug 'ujihisa/neco-look'
 Plug 'othree/yajs.vim'
 Plug 'heavenshell/vim-jsdoc'
 Plug 'Quramy/vison'
 Plug 'othree/jspc.vim'
-Plug 'ntpeters/vim-better-whitespace'
 
 " navigation/utils
 Plug 'terryma/vim-multiple-cursors'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'embear/vim-localvimrc'
 
 " Zen mode
 Plug 'junegunn/goyo.vim'
@@ -160,21 +162,29 @@ Plug 'jdkanani/vim-material-theme'
 Plug 'hzchirs/vim-material'
 Plug 'ayu-theme/ayu-vim'
 Plug 'rainglow/vim'
+Plug 'equt/paper.vim'
+Plug 'arcticicestudio/nord-vim'
 
 call plug#end()
 
 " =============================================
 "                colors/theming
 " =============================================
-set termguicolors
+"set termguicolors
 if &term =~# '^screen'
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 highlight pmenu guibg=#666666 ctermbg=6 ctermfg=0
 highlight pmenusel guibg=#333333 ctermbg=4 ctermfg=7
 let g:nova_transparent = "NONE"
-colorscheme allure
+
+colorscheme nord
+
+hi Normal guibg=NONE ctermbg=NONE
+highlight VertSplit ctermbg=NONE guibg=NONE cterm=NONE ctermfg=238
+hi SignColumn ctermbg=NONE guibg=NONE
+hi Todo cterm=bold ctermfg=0 ctermbg=7 gui=bold guifg=Black guibg=LightGrey
 
 "=============================================
 " sensible.vim/vim-sublime additional defaults
@@ -203,7 +213,7 @@ set encoding=UTF-8
 
 set tabstop=4 shiftwidth=4 expandtab
 
-set number
+set nonumber
 set hlsearch
 set ignorecase
 set smartcase
@@ -241,6 +251,7 @@ nnoremap <leader>t :let @+= expand("%p")<cr>
 nnoremap <c-u> :bprevious<cr>
 nnoremap <C-i> :bnext<CR>
 nnoremap <C-d> :bdelete<CR>
+nnoremap <leader>d :bp<BAR>bd#<CR>
 nnoremap <leader>w :split<CR>
 nnoremap <leader>W :vsplit<CR>
 
@@ -291,10 +302,31 @@ let g:NERDTreeMouseMode = 3
 " -- vim-airline/vim-airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='nova'
+let g:airline_theme='deus'
+let g:airline#extensions#coc#enabled = 1
+
+let s:hidden_all = 0
+function! ToggleHiddenAll()
+    if s:hidden_all == 0
+        let s:hidden_all = 1
+        set noshowmode
+        set noruler
+        set laststatus=0
+        set noshowcmd
+    else
+        let s:hidden_all = 0
+        set showmode
+        set ruler
+        set laststatus=2
+        set showcmd
+    endif
+    :AirlineToggle
+endfunction
+
+nnoremap <silent> <S-h> :call ToggleHiddenAll()<CR>
 
 " -- airblade/vim-gitgutter
-nnoremap <Leader>g :GitGutterToggle<CR>
+nnoremap <silent> <Leader>g :GitGutterToggle<CR>
 
 " -- Yggdroot/indentLine
 let g:indentLine_setColors = 220
@@ -339,6 +371,7 @@ command! -bang -nargs=* File
   \   <bang>0)
 
 nnoremap <Leader>f :File<CR>
+nnoremap <silent> <C-p> :Files<CR>
 
 nnoremap <silent> <leader>e :call Fzf_dev()<CR>
 
@@ -351,23 +384,23 @@ endif
 
 " Files + devicons
 function! Fzf_dev()
-  let l:fzf_files_options = '--preview "bat --style=numbers,changes --color always {2..-1} | head -'.&lines.'"'
+  let l:fzf_files_options = '--preview "bat --style=numbers,changes --color always {1..-1} | head -'.&lines.'"'
 
-  function! s:files()
-    let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
-    return s:prepend_icon(l:files)
-  endfunction
+  "function! s:files()
+  "  let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+  "  return s:prepend_icon(l:files)
+  "endfunction
 
-  function! s:prepend_icon(candidates)
-    let l:result = []
-    for l:candidate in a:candidates
-      let l:filename = fnamemodify(l:candidate, ':p:t')
-      let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
-      call add(l:result, printf('%s %s', l:icon, l:candidate))
-    endfor
+  "function! s:prepend_icon(candidates)
+  "  let l:result = []
+  "  for l:candidate in a:candidates
+  "    let l:filename = fnamemodify(l:candidate, ':p:t')
+  "    "let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
+  "    call add(l:result, printf('%s', l:candidate))
+  "  endfor
 
-    return l:result
-  endfunction
+  "  return l:result
+  "endfunction
 
   function! s:edit_file(item)
     let l:pos = stridx(a:item, ' ')
@@ -376,8 +409,15 @@ function! Fzf_dev()
   endfunction
 
   call fzf#run({
-        \ 'source': <sid>files(),
-        \ 'sink':   function('s:edit_file'),
+        \ 'sink': function('s:edit_file'),
         \ 'options': '-m ' . l:fzf_files_options,
         \ 'down':    '40%' })
 endfunction
+
+set conceallevel=0
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
+
+" -- coc
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)

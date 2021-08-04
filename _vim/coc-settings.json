@@ -1,0 +1,27 @@
+{
+    "coc.preferences.rootPatterns": [
+        ".eslintrc.json",
+        "package.json",
+        ".git",
+        "babelrc-lint.json"
+    ],
+    "eslint.format.enabled": true,
+    "eslint.filetypes": [
+        "javascript"
+    ],
+    "suggest.echodocSupport": true,
+    "suggest.maxCompleteItemCount": 20,
+    "tsserver.log": "verbose",
+    "tsserver.npm": "/usr/local/bin/npm",
+    "tsserver.enableJavascript": true,
+    "eslint.options": {
+        "parserOptions": {
+            "babelOptions": {
+                "cwd": "/Users/nyxtom/netcuras/node-core/"
+            }
+        }
+    },
+    "eslint.workingDirectories": [
+        { "mode": "auto" }
+    ]
+}
