@@ -22,3 +22,15 @@ fi
 
 source ~/.bashrc
 
+
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# Setting PATH for Python 3.8
+# The original version is saved in .profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.8/bin:${PATH}"
+export PATH
+
+export PATH="$HOME/.poetry/bin:$PATH"
+
+[[ -s "/Users/nyxtom/.gvm/scripts/gvm" ]] && source "/Users/nyxtom/.gvm/scripts/gvm"
+if [ -e /Users/nyxtom/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/nyxtom/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
