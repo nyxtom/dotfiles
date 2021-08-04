@@ -1,8 +1,12 @@
 # If not running interactively, don't do anything
 #[ -z "$PS1" ] && return
 
+# hide deprecated bash
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 # osx terminal colors
 export CLICOLOR=1
+export GLAMOUR_STYLE=light
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # don't overwrite GNU Midnight Commander's setting of `ignorespace'.
@@ -197,15 +201,31 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 export GOPATH=~/go
+export RUSTPATH=~/.cargo
 PATH=$PATH:/usr/local/sbin/
 PATH=$PATH:/usr/local/bin
 PATH=$PATH:/usr/local/cuda/bin
 PATH=$PATH:$HOME/local/node/bin
-PATH=$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin
 PATH=$PATH:$GOPATH/bin
 PATH=$PATH:~/bin
+PATH=$PATH:$RUSTPATH/bin
+PATH=$PATH:~/.pyenv/bin
+PATH=$PATH:/Users/nyxtom/Library/Python/3.8/bin
+PATH=$PATH:/Users/nyxtom/.npm-global/bin
+PATH=$PATH:/usr/local/opt/krb5/bin:/usr/local/opt/krb5/sbin
+PATH=/usr/local/opt/krb5/bin:$PATH
+PATH=/usr/local/opt/krb5/sbin:$PATH
+LDFLAGS="-L/usr/local/opt/krb5/lib"
+CPPFLAGS="-I/usr/local/opt/krb5/include"
+export LDFLAGS
+export CPPFLAGS
+eval "$(pyenv virtualenv-init -)"
 export PATH
 export NODE_PRESERVE_SYMLINKS=1
+source $HOME/.poetry/env
+
+# cargo cache
+export CARGO_TARGET_DIR="$HOME/.cache/cargo"
 
 # aliasing for git
 unalias branches 2> /dev/null
@@ -216,16 +236,34 @@ unalias add 2> /dev/null
 unalias merge 2> /dev/null
 unalias gdiff 2> /dev/null
 unalias commit 2> /dev/null
+unalias merged 2> /dev/null
+unalias gpush 2> /dev/null
+unalias pushf 2> /dev/null
+unalias pr 2> /dev/null
+unalias chk 2> /dev/null
+unalias checkout 2> /dev/null
+unalias gprune 2> /dev/null
+unalias ghst 2> /dev/null
 alias branches='git branch -a --no-merged | sed -Ee "s:^\*? *::" | sed -Ee "s:^(remotes/)?origin/::g" | grep -v "HEAD -> origin/master" | sort | uniq'
+alias pr='pull-request'
 alias pull='git pull'
+alias pushf='git push --force'
+alias gpush='git push'
 alias st='git status'
+alias chk='git checkout'
 alias co='git commit'
 alias pull='git pull'
 alias add='git add'
 alias merge='git merge'
 alias gdiff='git diff'
 alias commit='git commit -m'
+alias checkout='git checkout'
 alias imgcat='~/dotfiles/imgcat.sh'
+alias colorscheme='~/dotfiles/colorscheme.sh'
+alias tldr="/Users/nyxtom/.npm-global/lib/node_modules/tldr/bin/tldr"
+alias ghst='gh pr status'
+alias kitty="/Applications/kitty.app/Contents/MacOS/kitty"
+alias icat="kitty +kitten icat"
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 . /usr/local/etc/bash_completion.d/git-completion.bash
@@ -236,12 +274,9 @@ export workingfor="netcuras"
 export workuser="tom.holloway"
 export repos=~/$workingfor
 export GIT_REPO_BASE=$repos
+source $repos/.bashrc
 
 [ -z "$PS1" ] && return
-
-vpn() {
-    sudo openconnect --authgroup=$workingfor $1 --user=$workuser --passwd-on-stdin
-}
 
 work() {
     cd $repos/node-core
@@ -251,6 +286,7 @@ work() {
         . $repos/scripts/bashrc
     fi
 }
+
 
 # --files: List files that would be searched but do not search
 # --no-ignore: Do not respect .gitignore, etc...
@@ -291,3 +327,9 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 #   tmux attach || exec tmux
 # fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/nyxtom/google-cloud-sdk/path.bash.inc' ]; then . '/Users/nyxtom/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/nyxtom/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/nyxtom/google-cloud-sdk/completion.bash.inc'; fi
