@@ -80,13 +80,5 @@
   selected = normal
   separator = red bold
   linenumber = normal
-[git-bug "auth.ac2595bbd85213d1e1c24431a18276a67390e5caaacee0375ab2b0c20eb6c2b6"]
-	kind = token
-	target = github
-	createtime = 1597954810
-	salt = h0B7vPvJV14Xry/8Es0q5Q==
-	value = c142bd86904957cd1873168db18996ec9bc91451
-[git-bug "auth.ac2595bbd85213d1e1c24431a18276a67390e5caaacee0375ab2b0c20eb6c2b6.meta"]
-	login = nyxtom
 [log]
 	abbrevcommit = yes
