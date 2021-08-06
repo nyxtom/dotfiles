@@ -134,7 +134,7 @@ Plug 'neoclide/coc.nvim'
 Plug 'jiangmiao/auto-pairs'
 " Plug 'ujihisa/neco-look'
 Plug 'othree/yajs.vim'
-Plug 'heavenshell/vim-jsdoc'
+" Plug 'heavenshell/vim-jsdoc'
 Plug 'Quramy/vison'
 Plug 'othree/jspc.vim'
 

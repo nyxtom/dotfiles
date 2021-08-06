@@ -215,6 +215,7 @@ PATH=$PATH:/Users/nyxtom/.npm-global/bin
 PATH=$PATH:/usr/local/opt/krb5/bin:/usr/local/opt/krb5/sbin
 PATH=/usr/local/opt/krb5/bin:$PATH
 PATH=/usr/local/opt/krb5/sbin:$PATH
+PATH=/usr/local/opt/ruby/bin:$PATH
 LDFLAGS="-L/usr/local/opt/krb5/lib"
 CPPFLAGS="-I/usr/local/opt/krb5/include"
 export LDFLAGS
@@ -258,12 +259,8 @@ alias merge='git merge'
 alias gdiff='git diff'
 alias commit='git commit -m'
 alias checkout='git checkout'
-alias imgcat='~/dotfiles/imgcat.sh'
 alias colorscheme='~/dotfiles/colorscheme.sh'
-alias tldr="/Users/nyxtom/.npm-global/lib/node_modules/tldr/bin/tldr"
 alias ghst='gh pr status'
-alias kitty="/Applications/kitty.app/Contents/MacOS/kitty"
-alias icat="kitty +kitten icat"
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 . /usr/local/etc/bash_completion.d/git-completion.bash
