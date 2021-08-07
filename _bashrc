@@ -188,11 +188,6 @@ else
   alias ll="ls -lF"
 fi
 
-# Alias definitions.
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -209,7 +204,6 @@ PATH=$PATH:$HOME/local/node/bin
 PATH=$PATH:$GOPATH/bin
 PATH=$PATH:~/bin
 PATH=$PATH:$RUSTPATH/bin
-PATH=$PATH:~/.pyenv/bin
 PATH=$PATH:/Users/nyxtom/Library/Python/3.8/bin
 PATH=$PATH:/Users/nyxtom/.npm-global/bin
 PATH=$PATH:/usr/local/opt/krb5/bin:/usr/local/opt/krb5/sbin
@@ -220,70 +214,26 @@ LDFLAGS="-L/usr/local/opt/krb5/lib"
 CPPFLAGS="-I/usr/local/opt/krb5/include"
 export LDFLAGS
 export CPPFLAGS
-eval "$(pyenv virtualenv-init -)"
 export PATH
-export NODE_PRESERVE_SYMLINKS=1
-source $HOME/.poetry/env
 
 # cargo cache
 export CARGO_TARGET_DIR="$HOME/.cache/cargo"
 
 # aliasing for git
 unalias branches 2> /dev/null
-unalias pull 2> /dev/null
 unalias st 2> /dev/null
 unalias co 2> /dev/null
 unalias add 2> /dev/null
-unalias merge 2> /dev/null
-unalias gdiff 2> /dev/null
-unalias commit 2> /dev/null
-unalias merged 2> /dev/null
-unalias gpush 2> /dev/null
-unalias pushf 2> /dev/null
-unalias pr 2> /dev/null
-unalias chk 2> /dev/null
-unalias checkout 2> /dev/null
-unalias gprune 2> /dev/null
-unalias ghst 2> /dev/null
 alias branches='git branch -a --no-merged | sed -Ee "s:^\*? *::" | sed -Ee "s:^(remotes/)?origin/::g" | grep -v "HEAD -> origin/master" | sort | uniq'
-alias pr='pull-request'
-alias pull='git pull'
-alias pushf='git push --force'
-alias gpush='git push'
 alias st='git status'
-alias chk='git checkout'
-alias co='git commit'
-alias pull='git pull'
+alias co='git commit -m'
 alias add='git add'
-alias merge='git merge'
-alias gdiff='git diff'
-alias commit='git commit -m'
-alias checkout='git checkout'
-alias colorscheme='~/dotfiles/colorscheme.sh'
-alias ghst='gh pr status'
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 . /usr/local/etc/bash_completion.d/git-completion.bash
 fi
 
-# alias for starting work
-export workingfor="netcuras"
-export workuser="tom.holloway"
-export repos=~/$workingfor
-export GIT_REPO_BASE=$repos
-source $repos/.bashrc
-
 [ -z "$PS1" ] && return
-
-work() {
-    cd $repos/node-core
-    export NODE_MONGOOSE_MIGRATIONS_CONFIG="./database.js"
-    if [ -f $repos/scripts/bashrc ]
-    then
-        . $repos/scripts/bashrc
-    fi
-}
-
 
 # --files: List files that would be searched but do not search
 # --no-ignore: Do not respect .gitignore, etc...
