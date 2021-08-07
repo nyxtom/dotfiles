@@ -4,7 +4,7 @@
 [push]
 	default = current
 [core]
-	editor = nvim
+	editor = vim
 	autocrlf = false
 	abbrev = 8
 [merge]

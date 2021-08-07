@@ -226,7 +226,7 @@ unalias co 2> /dev/null
 unalias add 2> /dev/null
 alias branches='git branch -a --no-merged | sed -Ee "s:^\*? *::" | sed -Ee "s:^(remotes/)?origin/::g" | grep -v "HEAD -> origin/master" | sort | uniq'
 alias st='git status'
-alias co='git commit -m'
+alias co='git commit'
 alias add='git add'
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
