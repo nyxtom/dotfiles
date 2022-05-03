@@ -308,6 +308,8 @@ nnoremap <leader>` :call Term_toggle()<CR>
 nmap <C-\> :NERDTreeToggle<CR>
 nnoremap <leader>r :NERDTreeFind<CR>
 let g:NERDTreeMouseMode = 3
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeWinSize=40
 
 " -- vim-airline/vim-airline
 let g:airline#extensions#tabline#enabled = 1
