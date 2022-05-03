@@ -433,3 +433,23 @@ let g:vim_markdown_conceal_code_blocks = 0
 " -- coc
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
+
+" -- vimspector
+let g:vimspector_enable_mappings = "VISUAL_STUDIO"
+
+" -- remap paste to black hole register
+xnoremap p "_dP
+nnoremap m d
+xnoremap m d
+nnoremap mm dd
+nnoremap M D
+
+" -- COC Float Scroll
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+    nnoremap <silent><nowait><expr> <C-g> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-g>"
+    nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+    inoremap <silent><nowait><expr> <C-g> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+    inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+    vnoremap <silent><nowait><expr> <C-g> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-g>"
+    vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
