@@ -269,6 +269,10 @@ nmap <leader>Q :q<CR>
 "         Plugin Configuration
 "=============================================
 
+" -- rustfmt
+let g:rustfmt_autosave = 1
+let g:rust_clip_command = 'pbcopy'
+
 " -- tmux
 let g:tmux_navigator_no_mappings = 1
 nnoremap <silent> <C-j> :TmuxNavigateDown<CR>
