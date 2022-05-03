@@ -14,6 +14,7 @@
     "tsserver.log": "verbose",
     "tsserver.npm": "/usr/local/bin/npm",
     "tsserver.enableJavascript": true,
+    "tsserver.implicitProjectConfig.experimentalDecorators": true,
     "eslint.options": {
         "parserOptions": {
             "babelOptions": {

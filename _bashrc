@@ -280,3 +280,4 @@ if [ -f '/Users/nyxtom/google-cloud-sdk/path.bash.inc' ]; then . '/Users/nyxtom/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/nyxtom/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/nyxtom/google-cloud-sdk/completion.bash.inc'; fi
+. "$HOME/.cargo/env"
