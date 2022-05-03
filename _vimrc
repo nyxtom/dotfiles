@@ -130,12 +130,17 @@ Plug 'Yggdroot/indentLine'
 Plug 'pangloss/vim-javascript'
 Plug 'evanleck/vim-svelte'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'brooth/far.vim'
+Plug 'svermeulen/vim-cutlass'
+Plug 'mattn/webapi-vim'
+Plug 'chazmcgarvey/zencoding-vim'
+Plug 'puremourning/vimspector'
 
 Plug 'neoclide/coc.nvim'
 Plug 'jiangmiao/auto-pairs'
 " Plug 'ujihisa/neco-look'
 Plug 'othree/yajs.vim'
-" Plug 'heavenshell/vim-jsdoc'
+Plug 'heavenshell/vim-jsdoc'
 Plug 'Quramy/vison'
 Plug 'othree/jspc.vim'
 
