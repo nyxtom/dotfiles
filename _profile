@@ -34,3 +34,4 @@ export PATH="$HOME/.poetry/bin:$PATH"
 
 [[ -s "/Users/nyxtom/.gvm/scripts/gvm" ]] && source "/Users/nyxtom/.gvm/scripts/gvm"
 if [ -e /Users/nyxtom/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/nyxtom/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+. "$HOME/.cargo/env"
