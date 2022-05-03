@@ -24,5 +24,7 @@
     },
     "eslint.workingDirectories": [
         { "mode": "auto" }
-    ]
+    ],
+    "rust-analyzer.debug.runtime": "vimspector",
+    "rust-analyzer.debug.vimspector.configuration.name": "rust - lldb"
 }
