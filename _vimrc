@@ -117,10 +117,11 @@ endfunction
 
 " ------ Plugins -------
 
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'wfxr/minimap.vim'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
@@ -135,6 +136,7 @@ Plug 'svermeulen/vim-cutlass'
 Plug 'mattn/webapi-vim'
 Plug 'chazmcgarvey/zencoding-vim'
 Plug 'puremourning/vimspector'
+Plug 't9md/vim-choosewin'
 
 Plug 'neoclide/coc.nvim'
 Plug 'jiangmiao/auto-pairs'
@@ -273,6 +275,13 @@ nmap <leader>Q :q<CR>
 let g:rustfmt_autosave = 1
 let g:rust_clip_command = 'pbcopy'
 
+" -- minimap
+let g:minimap_auto_start = 1
+let g:minimap_auto_start_win_enter = 1
+
+" -- choosewin
+nmap - <Plug>(choosewin)
+
 " -- tmux
 let g:tmux_navigator_no_mappings = 1
 nnoremap <silent> <C-j> :TmuxNavigateDown<CR>
@@ -310,6 +319,10 @@ nnoremap <leader>r :NERDTreeFind<CR>
 let g:NERDTreeMouseMode = 3
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeWinSize=40
+let g:NERDTreeWinPos = "left"
+
+" -- clear cursor hold
+autocmd CursorHold * echon ''
 
 " -- vim-airline/vim-airline
 let g:airline#extensions#tabline#enabled = 1
@@ -433,6 +446,21 @@ let g:vim_markdown_conceal_code_blocks = 0
 " -- coc
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " -- vimspector
 let g:vimspector_enable_mappings = "VISUAL_STUDIO"
@@ -453,3 +481,31 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
     vnoremap <silent><nowait><expr> <C-g> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-g>"
     vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+ inoremap <silent><expr> <TAB>
+       \ coc#pum#visible() ? coc#pum#next(1):
+       \ CheckBackspace() ? "\<Tab>" :
+       \ coc#refresh()
+ inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+
