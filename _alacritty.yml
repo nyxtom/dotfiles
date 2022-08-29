@@ -12,6 +12,12 @@
 # available, otherwise 'xterm-256color' is used.
 #TERM: xterm-256color
 window:
+  # Background opacity
+  #
+  # Window opacity as a floating point number from `0.0` to `1.0`.
+  # The value `0.0` is completely transparent and `1.0` is opaque.
+  opacity: 1
+
   # Window dimensions (changes require restart)
   #
   # Specified in number of columns/lines, not pixels.
@@ -25,8 +31,8 @@ window:
   # Blank space added around the window in pixels. This padding is not scaled
   # by DPI and the specified value is always added at both opposing sides.
   padding:
-    x: 16
-    y: 8
+    x: 32
+    y: 16
 
   # Window decorations
   #
@@ -49,7 +55,7 @@ window:
 scrolling:
   # Maximum number of lines in the scrollback buffer.
   # Specifying '0' will disable scrolling.
-  history: 10000
+  history: 20000
 
   # Number of lines the viewport will move for every line scrolled when
   # scrollback is enabled (history > 0).
@@ -78,19 +84,19 @@ font:
   # Normal (roman) font face
   normal:
     # The `style` can be specified to pick a specific face.
-    family: 'Hasklug Nerd Font'
-    style: Regular
+    family: 'Hasklug Nerd Font Mono'
+    style: Light
 
   # Italic font face
   bold:
     # The `style` can be specified to pick a specific face.
-    family: 'Hasklug Nerd Font'
-    style: Bold
+    family: 'Hasklug Nerd Font Mono'
+    style: Semibold
 
   # Italic font face
   italic:
     # The `style` can be specified to pick a specific face.
-    family: 'Hasklug Nerd Font'
+    family: 'Hasklug Nerd Font Mono'
     style: Italic
 
   # Point size
@@ -100,7 +106,7 @@ font:
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
   offset:
     x: 0
-    y: 6
+    y: 2
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the right,
@@ -120,7 +126,7 @@ font:
   use_thin_strokes: true
 
 # Display the time it takes to redraw each frame.
-debug.render_timer: true
+debug.render_timer: false
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
@@ -149,12 +155,6 @@ draw_bold_text_with_bright_colors: true
 bell:
   animation: EaseOutExpo
   duration: 0
-
-# Background opacity
-#
-# Window opacity as a floating point number from `0.0` to `1.0`.
-# The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 1
 
 # Mouse bindings
 #
@@ -406,24 +406,36 @@ key_bindings:
 # Use custom cursor colors. If true, display the cursor in the cursor.foreground
 # and cursor.background colors, otherwise invert the colors of the cursor.
 custom_cursor_colors: true
+# Colors (Nord)
 colors:
   # Default colors
   primary:
-    background: '#202734'
-    foreground: '#CBCCC6'
+    #background: '0x2E3440'
+    #background: '#202734'
+    background: '#202023'
+    foreground: '0xD8DEE9'
 
   # Normal colors
   normal:
-    black: '#191E2A'
-    red: '#FF3333'
-    green: '#BAE67E'
-    yellow: '#FFA759'
-    blue: '#73D0FF'
-    magenta: '#FFD580'
-    cyan: '#95E6CB'
-    white: '#C7C7C7'
+    black:   '0x3B4252'
+    red:     '0xBF616A'
+    green:   '0xA3BE8C'
+    yellow:  '0xEBCB8B'
+    blue:    '0x81A1C1'
+    magenta: '0xB48EAD'
+    cyan:    '0x88C0D0'
+    white:   '0xE5E9F0'
 
   # Bright colors
+  # bright:
+  #   black:   '0x4C566A'
+  #   red:     '0xBF616A'
+  #   green:   '0xA3BE8C'
+  #   yellow:  '0xEBCB8B'
+  #   blue:    '0x81A1C1'
+  #   magenta: '0xB48EAD'
+  #   cyan:    '0x8FBCBB'
+  #   white:   '0xECEFF4'
   bright:
     black: '#686868'
     red: '#F27983'
@@ -433,3 +445,24 @@ colors:
     magenta: '#FFEE99'
     cyan: '#95E6CB'
     white: '#FFFFFF'
+
+#colors:
+#  # Default colors
+#  primary:
+#    #background: '#202734'
+##     background: '0x2E3440'
+#    background: '#232021'
+#    foreground: '#CBCCC6'
+
+#  # Normal colors
+#  normal:
+#    black: '#191E2A'
+#    red: '#FF3333'
+#    green: '#BAE67E'
+#    yellow: '#FFA759'
+#    blue: '#73D0FF'
+#    magenta: '#FFD580'
+#    cyan: '#95E6CB'
+#    white: '#C7C7C7'
+
+#  # Bright colors
