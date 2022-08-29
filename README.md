@@ -6,6 +6,7 @@ Revisions of some ideas I've come across for basic sensible defaults for dotfile
 
 I've listed some requirements I want for a usable/sensible vim editor:
 
+- minimap for scrolling: [minimap](https://github.com/wfxr/minimap.vim)
 - Sensible Scrolling: [sidescroll=1](https://ddrscott.github.io/blog/2016/sidescroll/)
 - Tree explorer: [NERD Tree](https://github.com/scrooloose/nerdtree)
 - Fuzzy search: [Fzf + Ripgrep](https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2)

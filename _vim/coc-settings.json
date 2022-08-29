@@ -9,12 +9,17 @@
     "eslint.filetypes": [
         "javascript"
     ],
+    "clangd.fallbackFlags": ["-std=c++17"],
+    "suggest.noselect": true,
     "suggest.echodocSupport": true,
-    "suggest.maxCompleteItemCount": 20,
+    "suggest.maxCompleteItemCount": 40,
     "tsserver.log": "verbose",
     "tsserver.npm": "/usr/local/bin/npm",
     "tsserver.enableJavascript": true,
     "tsserver.implicitProjectConfig.experimentalDecorators": true,
+    "javascript.suggest.names": false,
+    "javascript.suggest.completeJSDocs": true,
+    "javascript.suggest.autoImports": true,
     "eslint.options": {
         "parserOptions": {
             "babelOptions": {
@@ -26,5 +31,10 @@
         { "mode": "auto" }
     ],
     "rust-analyzer.debug.runtime": "vimspector",
-    "rust-analyzer.debug.vimspector.configuration.name": "rust - lldb"
+    "rust-analyzer.debug.vimspector.configuration.name": "rust - lldb",
+    "rust-analyzer.cargo.autoreload": true,
+    "rust-analyzer.inlayHints.enable": true,
+    "rust-analyzer.inlayHints.typeHints.enable": true,
+    "rust-analyzer.procMacro.enable": true,
+    "rust-analyzer.procMacro.attributes.enable": true
 }
