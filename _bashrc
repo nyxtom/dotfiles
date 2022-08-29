@@ -20,6 +20,10 @@ shopt -s histappend
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+## gpg
+GPG_TTY=$(tty)
+export GPG_TTY
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
@@ -27,6 +31,54 @@ shopt -s checkwinsize
 if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
+
+includepath() {
+    echo "" | gcc -E -Wp,-v -
+}
+
+initcpp() {
+    mkdir src
+    cat > CMakeLists.txt <<EOF
+# only for cmake --version >= 3.5.1
+cmake_minimum_required(VERSION 3.5.1)
+
+# project name
+get_filename_component(ProjectId \${CMAKE_CURRENT_SOURCE_DIR} NAME)
+string(REPLACE " " "_" ProjectId \${ProjectId})
+project(\${ProjectId})
+
+# creates the variable exec and sets it to hello
+set(EXEC a.out)
+
+# set the C++17 standard
+set(CMAKE_CXX_STANDARD 17)
+
+# I../includes
+include_directories(includes)
+
+# puts all .cpp files inside src to the sources variable
+file(GLOB SOURCES src/*.cpp)
+
+# compiles the files defined by sources to generate the executable
+add_executable(\${EXEC} \${SOURCES})
+EOF
+
+    cat > src/main.cpp <<EOF
+#include <iostream>
+
+int main() {
+    std::cout << "Hello World" << std::endl;
+    return 0;
+}
+EOF
+
+    cat > .gitignore <<EOF
+CMakeFiles
+*.cmake
+CMakeCache.txt
+Makefile
+EOF
+}
 
 # Adds the current branch to the bash prompt when the working directory is
 # part of a Git repository. Includes color-coding and indicators to quickly
@@ -224,10 +276,15 @@ unalias branches 2> /dev/null
 unalias st 2> /dev/null
 unalias co 2> /dev/null
 unalias add 2> /dev/null
+unalias gp 2> /dev/null
 alias branches='git branch -a --no-merged | sed -Ee "s:^\*? *::" | sed -Ee "s:^(remotes/)?origin/::g" | grep -v "HEAD -> origin/master" | sort | uniq'
 alias st='git status'
 alias co='git commit'
 alias add='git add'
+alias gp='git pull'
+alias checkout='git checkout'
+eval "$(gh completion -s bash)"
+source ~/netcuras/.bashrc
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 . /usr/local/etc/bash_completion.d/git-completion.bash
