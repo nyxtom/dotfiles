@@ -38,6 +38,9 @@ includepath() {
 
 initcpp() {
     mkdir src
+    cat > compile_flags.txt <<EOF
+-std=c++17
+EOF
     cat > CMakeLists.txt <<EOF
 # only for cmake --version >= 3.5.1
 cmake_minimum_required(VERSION 3.5.1)
@@ -262,11 +265,15 @@ PATH=$PATH:/usr/local/opt/krb5/bin:/usr/local/opt/krb5/sbin
 PATH=/usr/local/opt/krb5/bin:$PATH
 PATH=/usr/local/opt/krb5/sbin:$PATH
 PATH=/usr/local/opt/ruby/bin:$PATH
+BUN_INSTALL=/Users/nyxtom/.bun
+PATH=/Users/nyxtom/.bun/bin:$PATH
 LDFLAGS="-L/usr/local/opt/krb5/lib"
 CPPFLAGS="-I/usr/local/opt/krb5/include"
 export LDFLAGS
 export CPPFLAGS
 export PATH
+
+complete -C '/usr/local/bin/aws_completer' aws
 
 # cargo cache
 export CARGO_TARGET_DIR="$HOME/.cache/cargo"
@@ -284,7 +291,6 @@ alias add='git add'
 alias gp='git pull'
 alias checkout='git checkout'
 eval "$(gh completion -s bash)"
-source ~/netcuras/.bashrc
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 . /usr/local/etc/bash_completion.d/git-completion.bash

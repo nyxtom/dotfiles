@@ -23,7 +23,6 @@ fi
 source ~/.bashrc
 
 
-export PATH="$HOME/.cargo/bin:$PATH"
 
 # Setting PATH for Python 3.8
 # The original version is saved in .profile.pysave

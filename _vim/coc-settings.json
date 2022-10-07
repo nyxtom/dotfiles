@@ -9,7 +9,7 @@
     "eslint.filetypes": [
         "javascript"
     ],
-    "clangd.fallbackFlags": ["-std=c++17"],
+    "clangd.fallbackFlags": ["-std=c99"],
     "suggest.noselect": true,
     "suggest.echodocSupport": true,
     "suggest.maxCompleteItemCount": 40,

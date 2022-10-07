@@ -120,7 +120,7 @@ endfunction
 " Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
-Plug 'wfxr/minimap.vim'
+" Plug 'wfxr/minimap.vim'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
