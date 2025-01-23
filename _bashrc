@@ -1,5 +1,6 @@
 # If not running interactively, don't do anything
 #[ -z "$PS1" ] && return
+SHELL=/bin/bash
 
 # hide deprecated bash
 export BASH_SILENCE_DEPRECATION_WARNING=1
@@ -7,6 +8,9 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 # osx terminal colors
 export CLICOLOR=1
 export GLAMOUR_STYLE=light
+
+# bat theme
+export BAT_THEME="Nord"
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # don't overwrite GNU Midnight Commander's setting of `ignorespace'.
@@ -83,6 +87,10 @@ Makefile
 EOF
 }
 
+systeminfo() {
+    system_profiler SPSoftwareDataType SPHardwareDataType;
+}
+
 # Adds the current branch to the bash prompt when the working directory is
 # part of a Git repository. Includes color-coding and indicators to quickly
 # indicate the status of working directory.
@@ -123,6 +131,18 @@ git_status() {
     [[ -n $(git log $branch --not --remotes) ]] && output="${output}^"
     [[ -n $output ]] && output="$output"  # separate from branch name
     echo $output
+}
+
+git_archive_branches() {
+INTERVAL=7776000
+
+git for-each-ref refs/remotes | while read commit type ref;do
+    current=$(date +%s)
+    headcd=$(git log -1 --pretty=%cd --date=format:%s ${commit})
+    if [[ $((current-headcd)) -ge ${INTERVAL} ]];then
+        echo $ref
+    fi
+done
 }
 
 git_color() {
@@ -250,6 +270,9 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+## enable work specific settings
+[ -f ~/.workrc ] && source ~/.workrc
+
 export GOPATH=~/go
 export RUSTPATH=~/.cargo
 PATH=$PATH:/usr/local/sbin/
@@ -267,10 +290,12 @@ PATH=/usr/local/opt/krb5/sbin:$PATH
 PATH=/usr/local/opt/ruby/bin:$PATH
 BUN_INSTALL=/Users/nyxtom/.bun
 PATH=/Users/nyxtom/.bun/bin:$PATH
-LDFLAGS="-L/usr/local/opt/krb5/lib"
-CPPFLAGS="-I/usr/local/opt/krb5/include"
-export LDFLAGS
-export CPPFLAGS
+PATH=/opt/homebrew/bin:$PATH
+PATH=/opt/homebrew/opt/openjdk@19/bin:$PATH
+#LDFLAGS="-L/usr/local/opt/krb5/lib"
+#CPPFLAGS="-I/usr/local/opt/krb5/include"
+#export LDFLAGS
+#export CPPFLAGS
 export PATH
 
 complete -C '/usr/local/bin/aws_completer' aws
@@ -290,10 +315,15 @@ alias co='git commit'
 alias add='git add'
 alias gp='git pull'
 alias checkout='git checkout'
-eval "$(gh completion -s bash)"
+eval "$(/opt/homebrew/bin/gh completion -s bash)"
+eval "$(/opt/homebrew/bin/gh completion -s bash)"
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 . /usr/local/etc/bash_completion.d/git-completion.bash
+fi
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
 fi
 
 [ -z "$PS1" ] && return

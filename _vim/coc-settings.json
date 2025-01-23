@@ -1,13 +1,26 @@
 {
     "coc.preferences.rootPatterns": [
         ".eslintrc.json",
+        ".stylelintrs.json",
         "package.json",
         ".git",
         "babelrc-lint.json"
     ],
-    "eslint.format.enabled": true,
-    "eslint.filetypes": [
-        "javascript"
+    "languageserver": {
+        "graphql": {
+            "command": "graphql-lsp",
+            "args": ["server", "-m", "stream"],
+            "filetypes": ["typescript", "typescriptreact", "graphql"]
+        }
+    },
+    "tailwindCSS.includeLanguages": {
+        "typescript": "javascript",
+        "typescriptreact": "javascript"
+    },
+    "tailwindCSS.experimental.classRegex": [
+        "tw`([^`]*)", // tw`...`
+        "tw\\.[^`]+`([^`]*)`", // tw.xxx<xxx>`...`
+        "tw\\(.*?\\).*?`([^`]*)" // tw(Component)<xxx>`...`
     ],
     "clangd.fallbackFlags": ["-std=c99"],
     "suggest.noselect": true,
@@ -20,21 +33,18 @@
     "javascript.suggest.names": false,
     "javascript.suggest.completeJSDocs": true,
     "javascript.suggest.autoImports": true,
-    "eslint.options": {
-        "parserOptions": {
-            "babelOptions": {
-                "cwd": "/Users/nyxtom/netcuras/node-core/"
-            }
-        }
-    },
     "eslint.workingDirectories": [
         { "mode": "auto" }
     ],
+    "eslint.packageManager": "yarn",
     "rust-analyzer.debug.runtime": "vimspector",
     "rust-analyzer.debug.vimspector.configuration.name": "rust - lldb",
     "rust-analyzer.cargo.autoreload": true,
     "rust-analyzer.inlayHints.enable": true,
     "rust-analyzer.inlayHints.typeHints.enable": true,
     "rust-analyzer.procMacro.enable": true,
-    "rust-analyzer.procMacro.attributes.enable": true
+    "rust-analyzer.procMacro.attributes.enable": true,
+    "yaml.schemas": {
+        "kubernetes": "/*.yaml"
+    }
 }

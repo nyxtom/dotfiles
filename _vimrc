@@ -95,10 +95,13 @@ if has("autocmd")
 
   augroup END
 
+  augroup JsonToJsonc
+      autocmd! FileType json set filetype=jsonc
+  augroup END
+
 endif " has("autocmd")
 
-
-"=============================================
+" =============================================
 "            Plugins using vundle
 "=============================================
 
@@ -117,17 +120,20 @@ endfunction
 
 " ------ Plugins -------
 
+" Plug styled-components
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 " Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
+Plug 'jparise/vim-graphql'
 " Plug 'wfxr/minimap.vim'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'madox2/vim-ai'
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-commentary'
-Plug 'Yggdroot/indentLine'
 Plug 'pangloss/vim-javascript'
 Plug 'evanleck/vim-svelte'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
@@ -219,7 +225,7 @@ set autoread
 
 set encoding=UTF-8
 
-set tabstop=4 shiftwidth=4 expandtab
+set tabstop=2 shiftwidth=2 expandtab
 
 set nonumber
 set hlsearch
@@ -266,6 +272,13 @@ nnoremap <leader>W :vsplit<CR>
 " -- saving
 map <leader>s :w<CR>
 nmap <leader>Q :q<CR>
+
+" -- prettier
+map <leader>p :Prettier<CR>
+nmap <leader>p :Prettier<CR>
+
+" -- graphql
+au BufNewFile,BufRead *.prisma setfiletype graphql
 
 "=============================================
 "         Plugin Configuration
@@ -323,6 +336,9 @@ let g:NERDTreeWinPos = "left"
 
 " -- clear cursor hold
 autocmd CursorHold * echon ''
+
+" -- fix syntax syncing
+autocmd BufEnter * syntax sync fromstart
 
 " -- vim-airline/vim-airline
 let g:airline#extensions#tabline#enabled = 1
@@ -446,6 +462,7 @@ let g:vim_markdown_conceal_code_blocks = 0
 " -- coc
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gr <Plug>(coc-references)
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 " Use K to show documentation in preview window.
